@@ -998,3 +998,248 @@ Not applicable (documentation and test task).
 - Still open: the LINE URL, and the real social URLs (currently "task14" dummies).
 
 ---
+
+## Task B1 — WordPress Translation Text Domain
+
+Date:
+`2026-10-23 16:21`
+
+### Request
+
+Fix theme translation calls that do not use the correct text domain. Take the domain from the theme's real `Text Domain` header, fix only the problematic calls, and keep the theme loading with no unrelated changes.
+
+### AI Instruction
+
+New PHP task series B1 → B2 → B3, one task per cycle with confirmation in between (audit → minimum change → `php -l` → functional verification → regression → git diff → prompt log → stop). B1 only. Note other issues as findings without fixing them.
+
+### Files Inspected
+
+- `wp-content/themes/myrehat-test/style.css` (`Text Domain: myrehat-test`)
+- `wp-content/themes/myrehat-test/functions.php`: every `__`, `_e`, `_x`, `_ex`, `_n`, `_nx`, `_n_noop`, `_nx_noop`, `esc_html__`, `esc_html_e`, `esc_html_x`, `esc_attr__`, `esc_attr_e`, `esc_attr_x`, and `translate` call
+- `wp-content/themes/myrehat-test/page-trails.php`: no translation calls. It prints `myrehat_test_booking_title()` through `esc_html()`.
+- Search for `load_theme_textdomain`, `load_child_theme_textdomain`, `Domain Path`, and a `languages/` directory: none found.
+
+### Files Changed
+
+- `wp-content/themes/myrehat-test/functions.php`
+
+### Root Cause
+
+`myrehat_test_booking_title()` returned `__( 'Book a guided hike' )` without a domain (the line marked "BUG P1" in the file). With no domain argument, `__()` uses `'default'`, WordPress core's own translations, so a theme translation of this heading could never apply. The other 10 translation calls in the theme already use `'myrehat-test'`.
+
+### Changes Made
+
+- `__( 'Book a guided hike' )` changed to `__( 'Book a guided hike', 'myrehat-test' )`.
+- The stale "BUG P1" comment was replaced with a one-line description of the function.
+- The string text, the function name, and the escaping at the call site (`esc_html()` in `page-trails.php`) are unchanged.
+
+### Security Considerations
+
+- No change to output escaping. The heading is still escaped with `esc_html()` where it is printed, which is correct for an HTML text context, so a translated string cannot inject markup.
+- No input handling or credentials involved.
+
+### Verification
+
+- `php -l functions.php`: no syntax errors.
+- Functional check in the isolated real WordPress copy (WP 6.8.3, theme `myrehat-test` active), loaded through `wp-load.php`.
+  - Setup: a `gettext` hook records the domain used for "Book a guided hike", and a sample translation is registered on `gettext_myrehat-test` only.
+  - **Before** (git HEAD `functions.php`): domain `default`, output "Book a guided hike". The theme translation was not applied.
+  - **After** (working tree): domain `myrehat-test`, output "Pesan pendakian berpemandu". The theme translation applies.
+- The real front page returns HTTP 200 and renders `<h2>Book a guided hike</h2>`. `wp-login.php` returns HTTP 200.
+
+### Regression Check
+
+- Full 200-check suite on the real WordPress copy (A1–A12 at 1280px and 390px, logged in and out, including booking AJAX, no-JS POST, and a post page without the form): **200/200 pass**.
+- WP `debug.log`: 0 entries from `myrehat-test`.
+- The UAT script was deliberately not re-run, because it rewrites `docs/uat/` and would add changes unrelated to B1.
+- `git diff`: one file, 2 lines changed (the comment and the call). No credentials.
+
+### Result
+
+`PASS`. The single domain-less translation call now uses the theme's real text domain, verified functionally in WordPress.
+
+### Remaining Notes
+
+- Findings for other tasks:
+  - B2: the booking handler (`myrehat_test_booking_handler`) was already given a nonce, sanitising, and allowlists during A12. It will be re-audited against the B2 checklist rather than assumed complete.
+  - B3: `myrehat_trail_viewed` is registered with `$accepted_args = 1` while the callback has 2 parameters (marked "BUG P3"). Not touched.
+  - Outside B1–B3: the theme never calls `load_child_theme_textdomain()` and has no `languages/` directory. With the domain fixed, translations are picked up from `wp-content/languages/themes/myrehat-test-{locale}.mo`. To ship translations inside the theme, a later change would need a `languages/` directory and a `load_child_theme_textdomain()` call. Not required by B1.
+  - Template strings in `page-trails.php` are hardcoded English (not wrapped in translation functions). Left as is: converting them would widen the scope beyond B1.
+
+---
+
+## Task B2 — Form Security: Nonce, Sanitization, Validation
+
+Date:
+`2026-10-23 16:28`
+
+### Request
+
+Secure the booking form handler: nonce (present and verified), type-appropriate sanitising, validation, enum allowlists, server-side pricing, escaped output, and clear error handling, with success only after processing succeeds. Valid bookings must keep working.
+
+### AI Instruction
+
+Same B-series workflow. The user authorised continuing through B3 ("lanjut sampai task b3"), so B2 and B3 run back to back, each audited, verified, and logged separately. Map form → request → handler → validation → save → response before changing anything. Do not touch B3.
+
+### Files Inspected
+
+- `wp-content/themes/myrehat-test/page-trails.php` (form fields, nonce field, escaped result output)
+- `wp-content/themes/myrehat-test/functions.php` (`myrehat_test_validate_booking`, `myrehat_test_booking_handler`, `myrehat_test_booking_result`)
+- `wp-content/themes/myrehat-test/trails.js` (fetch POST with `FormData` plus `ajax=1`)
+- Search for `$_POST`, `$_GET`, `$_REQUEST`, `$_COOKIE`, `$_SERVER`, `$_FILES`, `admin_post_*`, `wp_ajax_*`, `register_rest_route`: the only entry point is the `template_redirect` handler. There is no `wp_ajax`, so `check_ajax_referer()` does not apply; `wp_verify_nonce()` is the right API.
+
+### Files Changed
+
+- `wp-content/themes/myrehat-test/functions.php`
+- `wp-content/themes/myrehat-test/page-trails.php`
+
+### Root Cause
+
+The original handler from the initial commit (marked "BUG P2") used `$_POST['date']` raw with no nonce. That was already replaced during A12 (commit `e153a72`) when the handler was first connected to the form, so B2 re-audited that code against the B2 checklist. Nonce, unslash plus sanitising, allowlists, required checks, server pricing, and escaping were already in place. The audit and real-WordPress tests found three remaining gaps:
+
+1. `booking_name` was sanitised but not validated for length. Any size was accepted, stored in the transient, and echoed back.
+2. The response-mode flag was read raw with `! empty( $_POST['ajax'] )`, so any non-empty value counted as AJAX instead of the `'1'` contract.
+3. **Bug found by testing:** `set_transient()` (via `update_option()`) returns `false` when the stored value is unchanged. Submitting the same booking twice in a row therefore got a false "We could not save your booking". Reproduced against git HEAD: 1st submit HTTP 200, 2nd HTTP 400.
+
+### Changes Made
+
+- `myrehat_test_validate_booking()`: empty name gives "Please enter your name."; more than 100 characters (`mb_strlen`) gives "Your name must be 100 characters or fewer.". Otherwise the name is accepted.
+- New `myrehat_test_save_booking( $booking )`: returns `set_transient(...) || get_transient(...) === $booking`. An unchanged value counts as stored only when the stored value really equals this booking; a genuine write failure is still a failure. The handler uses it instead of `set_transient()` directly.
+- Handler: the AJAX response is used only when `isset( $_POST['ajax'] ) && '1' === $_POST['ajax']`. Anything else gets the normal server-rendered response.
+- `page-trails.php`: `maxlength="100"` on the name input, matching the server rule. This is UX only; the server stays authoritative.
+
+### Security Considerations
+
+- **Trust boundary:** every field is unslashed and sanitised by type (`sanitize_text_field`, `sanitize_key`), then validated separately: required checks, name length, strict `YYYY-MM-DD` date with `checkdate`, `in_array( …, true )` allowlist for Digital Nomad, plan-key allowlist, checkbox exactly `'1'`. Arrays sent in place of scalars are rejected.
+- **Nonce:** `wp_nonce_field( 'myrehat_test_booking', 'trails_booking_nonce' )` in the form, and `wp_verify_nonce()` before any validation or save. A missing, garbage, or other-action nonce is rejected with HTTP 400.
+- **Business-critical value:** the price comes only from `myrehat_test_booking_plans()` on the server; `price`, `total`, and `amount` from the browser are ignored.
+- **Output:** the server-rendered message and errors go through `esc_html()`, class names are fixed strings, and the AJAX message is inserted with `textContent`. Error messages expose no paths, stack traces, or DB errors.
+- GET requests carrying the booking parameters are ignored (the handler reads only `$_POST`).
+
+### Verification
+
+- `php -l` on `functions.php` and `page-trails.php`: no syntax errors.
+- **33/33 security tests over real HTTP** on the isolated WordPress copy (logged-out visitor, real nonce, real `sanitize_text_field`, stored data read back from the WP transient):
+  - **Test 1** valid submit: HTTP 200, stored `{"name":"B2 Valid",…,"price":8400,"host_terms":true}`.
+  - **Test 2** missing nonce: HTTP 400 "Your session has expired…", storage unchanged.
+  - **Test 3** invalid nonce, both garbage and a real nonce for another action: HTTP 400, storage unchanged.
+  - **Test 4** enum manipulation (`digital_nomad=Maybe`, `ya`; `plan=weekly`, `yearly`; `host_terms=on`, `true`): HTTP 400 with the field error, storage unchanged.
+  - **Test 5** HTML or script in the name:
+    - `<script>alert(1)</script>Eve <b>Bold</b>` is stored as `Eve Bold`.
+    - `"><img src=x onerror=alert(1)>Mallory` is stored as `">Mallory` (no tags) and rendered escaped as `&quot;&gt;Mallory`.
+    - `O'Brien & Sons` is kept and rendered as `O&#039;Brien &amp; Sons`.
+    - No `<script>`, `<img>`, or `onerror` in the JSON or HTML.
+    - The first run of this test used a stricter "no `<` or `>` at all" criterion and flagged `">Mallory`. That plain text is harmless once escaped, so the criterion was corrected to "no tags stored, output escaped".
+  - **Test 6** required fields (empty, whitespace-only, or tags-only name; missing or impossible date; missing plan; unchecked terms): HTTP 400, storage unchanged.
+  - **Test 7** price manipulation (`price=1`, `total=99999`, `plan=daily`): stored price 350, message "Total: RM 350".
+  - **Extra:**
+    - Name length: 100 characters accepted; 101 and 200,000 characters rejected.
+    - Array injection (`booking_name[]`, `digital_nomad[]`) rejected.
+    - `ajax=false` gets the HTML response; GET with booking parameters is ignored.
+    - The same booking submitted twice: both HTTP 200.
+    - A genuine storage failure (a test-only mu-plugin in the scratch copy blocks the write) is still reported: HTTP 400 "could not save", nothing stored.
+- Duplicate-submit bug before and after: git HEAD gave 200 then **400**; the fix gives 200 then 200.
+
+### Regression Check
+
+- Full 200-check suite on the real WordPress copy (A1–A12, 1280px and 390px, logged in and out, booking AJAX, no-JS POST, tampering, post page): **200/200 pass**.
+- WP `debug.log`: 0 theme entries.
+- `git diff`: B1 hunk plus B2 changes only. The B3 hook code is untouched. No credentials.
+
+### Result
+
+`PASS`. The handler meets every B2 criterion, verified over real HTTP in WordPress, and a real false-failure bug in the save step was found and fixed.
+
+### Remaining Notes
+
+- Findings for other tasks and follow-ups (not changed):
+  - B3: `myrehat_trail_viewed` / `myrehat_test_count_view` untouched.
+  - Business rule not specified, so not enforced: past booking dates are accepted. If bookings must be in the future, add a server check against `current_time( 'Y-m-d' )`.
+  - With full-page caching for logged-out visitors, the cache lifetime must stay below the nonce lifetime (12–24h), otherwise valid users get "session expired".
+  - Bookings are still a single 1-hour transient (existing architecture). Durable storage is a product decision.
+- The scratch WordPress copy contains a test-only mu-plugin (`uat-fail-save.php`, active only while a flag file exists). It is not part of the repo.
+
+---
+
+## Task B3 — Hook Counter Argument
+
+Date:
+`2026-10-23 16:31`
+
+### Request
+
+Fix the trail-view counter hook so its callback receives the real ID (reported as always `null`) by correcting the registration, callback signature, accepted args, and how the ID is obtained. Validate the ID and never update the wrong object.
+
+### AI Instruction
+
+Same B-series workflow (B2 and B3 authorised back to back). Find all `add_action`/`do_action` for the hook. Verify the hook contract before using `2`. Explain the root cause from evidence, not guesses.
+
+### Files Inspected
+
+- `wp-content/themes/myrehat-test/functions.php` (registration and callback)
+- Search across the repo (theme, plugins, WP core, JS) for `myrehat_trail_viewed`, `trail_viewed`, `myrehat_test_count_view`, `trail_views_`: the only matches are the registration and callback. **No `do_action( 'myrehat_trail_viewed' )` caller exists.**
+- `git log -S myrehat_trail_viewed`: present since the first commit (`aeaae38`) as a registration only.
+- `page-trails.php`: trail cards are static HTML with no IDs.
+
+### Files Changed
+
+- `wp-content/themes/myrehat-test/functions.php`
+
+### Root Cause
+
+Measured by firing `do_action` directly in the real WordPress copy against the original code (git HEAD) and recording every `trail_views_*` option change:
+
+- `$accepted_args` was **1**, but the callback's contract (its signature, the only definition of this custom hook since nothing calls it) is `( $trail_id, $count )`. The **second argument was always dropped**: `do_action( hook, 42, 3 )` added +1, not +3; `(42, 0)` and `(42, -2)` also added +1.
+- **No ID validation.** When the hook was fired without an ID, the ID arrived as `""` or `null` and was **counted under the shared key `trail_views_`** instead of being rejected. That is the "ID is null" symptom.
+- Invalid IDs created junk keys (`trail_views_0`, `_-5`, `_42abc`, `_4.5`), and `true` incremented `trail_views_1`, a **different object**.
+- Correction to the original "BUG P3" comment: with an ID-first caller, the callback does receive the ID (`do_action( hook, 42 )` incremented `trail_views_42`). "Always null" is not literally true; the null case is a missing or empty ID that was not rejected.
+
+### Changes Made
+
+- Registration: `add_action( 'myrehat_trail_viewed', 'myrehat_test_count_view', 10, 2 )`, changed from `1`. The `2` was verified against the callback signature, which defines this theme-owned hook; no caller contradicts it.
+- New `myrehat_test_positive_int( $value )`: accepts only an `int` or a digit-only string and returns a positive int, or `0` otherwise.
+- `myrehat_test_count_view()` validates `$trail_id` and `$count` with that helper and returns early, writing nothing, when either is not a positive integer. Otherwise the existing logic is unchanged (`get_option` + `update_option` on `trail_views_{id}`).
+- Docblock documents the hook contract: `do_action( 'myrehat_trail_viewed', $trail_id, $count )`. The stale "BUG P3" comment was removed.
+- Not changed: no caller was added. The trail cards have no IDs, so choosing an ID source would be inventing data (see Remaining Notes).
+
+### Security Considerations
+
+- Untrusted hook arguments are validated strictly before being used to build an option key. No arbitrary option names (`trail_views_42abc`) or wrong-object writes (`true` → trail 1) remain.
+- `absint()` was deliberately not used, because it maps `-5` to `5` (a different trail) and `4.5` to `4`. The strict positive-integer check rejects those instead.
+- No input from requests is involved. The option value is still cast with `(int)`.
+
+### Verification
+
+- `php -l` on `functions.php` and `page-trails.php`: no syntax errors.
+- Before/after on the real WordPress copy (12 caller shapes; an unrelated `trail_views_7 = 10` used as a control; test options cleaned up afterwards):
+
+| Caller | Original | Fixed |
+|---|---|---|
+| `(42)` | 42: +1 | 42: +1 |
+| `(42, 3)` | callback gets `[42]`, +1 | callback gets `[42,3]`, **+3** |
+| `('42')` | +1 | +1 |
+| `()` / `(null)` | `trail_views_` +1 | **nothing written** |
+| `(0)`, `(-5)`, `('42abc')`, `(4.5)` | junk keys created | **nothing written** |
+| `(true)` | `trail_views_1` +1 (wrong object) | **nothing written** |
+| `(42, 0)`, `(42, -2)` | +1 | **nothing written** |
+| registered `accepted_args` | 1 | 2 |
+| control `trail_views_7` | 10 (unchanged) | 10 (unchanged) |
+
+### Regression Check
+
+- Full 200-check suite on the real WordPress copy (A1–A12, both widths, logged in and out): **200/200 pass**.
+- B2 security suite: **33/33 pass**.
+- WP `debug.log`: 0 theme entries.
+- The other hooks (`wp_enqueue_scripts`, `template_redirect`, and the URL filters) are unchanged and exercised by the suites.
+- `git diff`: only the hook block in `functions.php` for B3 (plus the earlier B1/B2 hunks). No credentials.
+
+### Result
+
+`PASS` for the defect: the callback receives the real ID and count, invalid or null IDs are rejected, and no wrong object is updated, verified with the real `do_action` in WordPress. **Note:** nothing in the codebase fires the hook, so the counter still does not run in the app until a caller is added.
+
+### Remaining Notes
+
+- Finding: **no `do_action( 'myrehat_trail_viewed', … )` caller exists.** To make views count, a caller must be added where a trail is viewed, with a real ID, for example `do_action( 'myrehat_trail_viewed', get_the_ID() )` if trails become posts or a CPT. The current trail cards are static HTML without IDs, which is a product decision.
+- Each trail creates its own autoloaded option (existing design). For many trails, post meta or `autoload = false` would scale better. Not changed.
+
+---
