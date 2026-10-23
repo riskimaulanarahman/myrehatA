@@ -1,0 +1,189 @@
+{
+  "steps": [
+    "front page id 4 (MyRehat Verify)",
+    "page: \"Trails\" #4, public http://127.0.0.1:8770/, editor http://127.0.0.1:8770/wp-admin/post.php?post=4&action=elementor",
+    "container added (Layout → Container, flex column)",
+    "container: align items center, background #0C6B4F, padding 32/20, CSS class trails-hero",
+    "heading: H1 \"Tropic Hiking Trails\", centered, white, 32px",
+    "text editor: \"Find your next trail with MyRehat\", centered, white, 16px",
+    "html: search input #main-search, full width",
+    "mobile: heading 28px, container padding 24/16",
+    "export: downloaded \"elementor-47-2026-10-23.json\" → artifacts/elementor/hero-template.json"
+  ],
+  "checks": [
+    {
+      "ok": true,
+      "msg": "pre-flight: site reachable (HTTP 200)"
+    },
+    {
+      "ok": true,
+      "msg": "pre-flight: login reachable (HTTP 200)"
+    },
+    {
+      "ok": true,
+      "msg": "pre-flight: Playwright browser launched (155.0.8059.86)"
+    },
+    {
+      "ok": true,
+      "msg": "login: authenticated (admin bar visible)"
+    },
+    {
+      "ok": true,
+      "msg": "editor: document empty before rebuild (0 elements)"
+    },
+    {
+      "ok": true,
+      "msg": "structure order: heading.default → text-editor.default → html.default"
+    },
+    {
+      "ok": true,
+      "msg": "publish: save_builder success=true (HTTP 200)"
+    },
+    {
+      "ok": true,
+      "msg": "reload: hero persisted in editor after publish"
+    },
+    {
+      "ok": true,
+      "msg": "save as template: \"Trails Hero\" #47"
+    },
+    {
+      "ok": true,
+      "msg": "editor: no page errors from the hero/theme  (known WP core wp-auth-check heartbeat error seen 2×)"
+    },
+    {
+      "ok": true,
+      "msg": "public 1440: no overflow (scrollWidth 1440/1440)"
+    },
+    {
+      "ok": true,
+      "msg": "public 1440: h1 32px white centered on #0C6B4F (padding 32px 20px)"
+    },
+    {
+      "ok": true,
+      "msg": "public 1440: text + 420px search input (510–930)"
+    },
+    {
+      "ok": true,
+      "msg": "public: old hardcoded hero replaced by Elementor hero"
+    },
+    {
+      "ok": true,
+      "msg": "public: no broken images (0)"
+    },
+    {
+      "ok": true,
+      "msg": "public: header search in the Elementor hero still filters the listing and syncs"
+    },
+    {
+      "ok": true,
+      "msg": "public 390: no horizontal overflow (scrollWidth 390)"
+    },
+    {
+      "ok": true,
+      "msg": "public 390: h1 28px (1 line(s)), padding 24px 16px"
+    },
+    {
+      "ok": true,
+      "msg": "public 390: search input tappable, within viewport (34–356)"
+    },
+    {
+      "ok": true,
+      "msg": "public: no console errors "
+    },
+    {
+      "ok": true,
+      "msg": "json: parses (1448 bytes, starts with \"{\")"
+    },
+    {
+      "ok": true,
+      "msg": "json: Elementor template structure (version 0.4, type container, title \"Trails Hero\")"
+    },
+    {
+      "ok": true,
+      "msg": "json: hero elements container, heading, text-editor, html"
+    },
+    {
+      "ok": true,
+      "msg": "json: heading \"Tropic Hiking Trails\" (h1) present"
+    },
+    {
+      "ok": true,
+      "msg": "json: search input #main-search present"
+    },
+    {
+      "ok": true,
+      "msg": "json: no credential exposure"
+    }
+  ],
+  "page": {
+    "title": "Trails",
+    "id": 4,
+    "publicUrl": "http://127.0.0.1:8770/",
+    "editorUrl": "http://127.0.0.1:8770/wp-admin/post.php?post=4&action=elementor"
+  },
+  "templateId": 47,
+  "knownCoreEditorErrors": [
+    "after \"page: \"Trails\" #4, public http://127.0.0.1:8770/, editor http://127.0.0.1:8770/wp-admin/post.php?post=4&action=elementor\": Cannot read properties of undefined (reading 'hasClass') @ at HTMLDocument.<anonymous> (http://127.0.0.1:8770/wp-includes/js/wp-auth-check.min.js?ver=6.8.3:2:655) /     at HTMLDocument.dispatch (http://127.0.0.1:8770/wp-admin/load-scripts.php?c=1&load%5Bchunk_0%5D=jquery-core,jq",
+    "after \"mobile: heading 28px, container padding 24/16\": Cannot read properties of undefined (reading 'hasClass') @ at HTMLDocument.<anonymous> (http://127.0.0.1:8770/wp-includes/js/wp-auth-check.min.js?ver=6.8.3:2:655) /     at HTMLDocument.dispatch (http://127.0.0.1:8770/wp-admin/load-scripts.php?c=1&load%5Bchunk_0%5D=jquery-core,jq"
+  ],
+  "desktop": {
+    "vw": 1440,
+    "scrollWidth": 1440,
+    "width": 1440,
+    "height": 219,
+    "bg": "rgb(12, 107, 79)",
+    "padding": "32px 20px",
+    "h1": {
+      "text": "Tropic Hiking Trails",
+      "size": "32px",
+      "color": "rgb(255, 255, 255)",
+      "align": "center",
+      "lines": 1
+    },
+    "text": "Find your next trail with MyRehat",
+    "input": {
+      "width": 420,
+      "left": 510,
+      "right": 930
+    },
+    "allInside": true
+  },
+  "mobile": {
+    "vw": 390,
+    "scrollWidth": 390,
+    "width": 390,
+    "height": 199,
+    "bg": "rgb(12, 107, 79)",
+    "padding": "24px 16px",
+    "h1": {
+      "text": "Tropic Hiking Trails",
+      "size": "28px",
+      "color": "rgb(255, 255, 255)",
+      "align": "center",
+      "lines": 1
+    },
+    "text": "Find your next trail with MyRehat",
+    "input": {
+      "width": 322,
+      "left": 34,
+      "right": 356
+    },
+    "allInside": true
+  },
+  "export": {
+    "suggestedFilename": "elementor-47-2026-10-23.json",
+    "file": "artifacts/elementor/hero-template.json"
+  },
+  "json": {
+    "version": "0.4",
+    "type": "container",
+    "title": "Trails Hero",
+    "elements": [
+      "container",
+      "heading",
+      "text-editor",
+      "html"
+    ]
+  }
+}
