@@ -1,0 +1,741 @@
+{
+  "meta": {
+    "runAt": "2026-10-23T08:07:42.560Z",
+    "baseUrl": "http://127.0.0.1:8770/",
+    "browser": "Chromium 155.0.8059.86",
+    "loggedInScenarios": true,
+    "serverChecks": true
+  },
+  "results": [
+    {
+      "task": "A1",
+      "id": "A1-01",
+      "title": "Search judul \"mount\" memfilter listing",
+      "steps": [
+        "Buka halaman trails (desktop 1280px)",
+        "Ketik \"mount\" di kotak \"Search trails...\""
+      ],
+      "expected": "Hanya 2 trail yang judulnya mengandung \"Mount\" yang tampil",
+      "actual": "2 tampil: Mount Rinjani Sunrise, Mount Kinabalu Base Trek",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A1-01-search-mount.png"
+      ]
+    },
+    {
+      "task": "A1",
+      "id": "A1-02",
+      "title": "Search tidak case-sensitive",
+      "steps": [
+        "Ketik \"MOUNT\" (huruf besar)"
+      ],
+      "expected": "Hasil sama dengan \"mount\" (2 trail)",
+      "actual": "2 tampil: Mount Rinjani Sunrise, Mount Kinabalu Base Trek",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A1",
+      "id": "A1-03",
+      "title": "Search berdasarkan lokasi",
+      "steps": [
+        "Ketik \"Sabah\""
+      ],
+      "expected": "Mount Kinabalu Base Trek (lokasi Sabah) tampil",
+      "actual": "1 tampil: Mount Kinabalu Base Trek",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A1",
+      "id": "A1-04",
+      "title": "Search tanpa hasil menampilkan pesan kosong",
+      "steps": [
+        "Ketik \"zzzz\""
+      ],
+      "expected": "Tidak ada trail tampil; pesan \"No trails found.\" muncul",
+      "actual": "0 tampil, pesan kosong tampil",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A1-04-search-no-results.png"
+      ]
+    },
+    {
+      "task": "A1",
+      "id": "A1-05",
+      "title": "Search dikosongkan menampilkan semua listing",
+      "steps": [
+        "Hapus isi kotak search"
+      ],
+      "expected": "Semua 6 trail tampil kembali; pesan kosong hilang",
+      "actual": "6 tampil, pesan kosong hilang",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A2",
+      "id": "A2-01",
+      "title": "Filter kategori Beach",
+      "steps": [
+        "Pilih kategori \"Beach\""
+      ],
+      "expected": "Hanya trail kategori beach (2) yang tampil",
+      "actual": "2 tampil: Pulau Perhentian Coastal Walk, Langkawi Sunset Ridge",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A2-01-category-beach.png"
+      ]
+    },
+    {
+      "task": "A2",
+      "id": "A2-02",
+      "title": "Kombinasi search + kategori",
+      "steps": [
+        "Kategori tetap \"Beach\"",
+        "Ketik \"sunset\""
+      ],
+      "expected": "Hanya trail yang memenuhi kedua kondisi tampil (Langkawi Sunset Ridge)",
+      "actual": "1 tampil: Langkawi Sunset Ridge",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A2-02-search-plus-category.png"
+      ]
+    },
+    {
+      "task": "A2",
+      "id": "A2-03",
+      "title": "Kombinasi yang bertentangan",
+      "steps": [
+        "Ketik \"mount\"",
+        "Kategori \"Beach\""
+      ],
+      "expected": "Tidak ada hasil; pesan \"No trails found.\" muncul",
+      "actual": "0 tampil, pesan kosong tampil",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A2",
+      "id": "A2-04",
+      "title": "\"All categories\" mengikuti search aktif",
+      "steps": [
+        "Search tetap \"mount\"",
+        "Pilih \"All categories\""
+      ],
+      "expected": "Hasil sesuai search saja (2 trail Mount)",
+      "actual": "2 tampil: Mount Rinjani Sunrise, Mount Kinabalu Base Trek",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A2",
+      "id": "A2-05",
+      "title": "Semua kategori dapat dipilih",
+      "steps": [
+        "Pilih Mountain, Beach, Forest bergantian dengan search kosong"
+      ],
+      "expected": "Masing-masing menampilkan 2 trail sesuai kategorinya",
+      "actual": "mountain=2, beach=2, forest=2",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A10",
+      "id": "A10-01",
+      "title": "Header search memfilter listing yang sama",
+      "steps": [
+        "Ketik \"kinabalu\" di kotak search header (\"Search homepage...\")"
+      ],
+      "expected": "Listing terfilter; kotak search listing ikut berisi \"kinabalu\"",
+      "actual": "1 tampil (Mount Kinabalu Base Trek); kotak listing = \"kinabalu\"",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A10-01-header-search.png",
+        "screenshots/A10-01-header-search-listing.png"
+      ]
+    },
+    {
+      "task": "A10",
+      "id": "A10-02",
+      "title": "Kotak search listing sinkron balik ke header",
+      "steps": [
+        "Ketik \"perak\" di kotak search listing"
+      ],
+      "expected": "Header berisi \"perak\"; listing terfilter (1 trail)",
+      "actual": "1 tampil; header = \"perak\"",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A10",
+      "id": "A10-03",
+      "title": "Header search + kategori",
+      "steps": [
+        "Ketik \"mount\" di header",
+        "Pilih kategori \"Mountain\", lalu \"Beach\""
+      ],
+      "expected": "Mountain → 2 trail; Beach → 0 dengan pesan kosong",
+      "actual": "Mountain=2, Beach=0, pesan kosong tampil",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A10",
+      "id": "A10-04",
+      "title": "Tidak ada listener ganda",
+      "steps": [
+        "Periksa event listener pada #main-search, #search-box, #category (Chrome DevTools Protocol)"
+      ],
+      "expected": "Masing-masing tepat 1 listener",
+      "actual": "#main-search: input; #search-box: input; #category: change",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A5",
+      "id": "A5-01",
+      "title": "Judul halaman tepat",
+      "steps": [
+        "Lihat heading utama halaman"
+      ],
+      "expected": "Teks persis \"Tropic Hiking Trails\"",
+      "actual": "h1 = [\"Tropic Hiking Trails\"]",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A5-01-heading.png"
+      ]
+    },
+    {
+      "task": "A3",
+      "id": "A3-01",
+      "title": "Tombol WhatsApp & LINE tampil di atas, bold",
+      "steps": [
+        "Buka halaman (desktop)",
+        "Lihat area atas halaman"
+      ],
+      "expected": "Dua tombol WhatsApp dan LINE terlihat jelas, teks bold, di bawah navigasi utama",
+      "actual": "WhatsApp & LINE, font-weight 700/700, bar di y=80 (nav berakhir y=80)",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A3-01-buttons-desktop-top.png"
+      ]
+    },
+    {
+      "task": "A3",
+      "id": "A3-02",
+      "title": "Tombol sticky saat halaman di-scroll",
+      "steps": [
+        "Scroll ke bawah 900px"
+      ],
+      "expected": "Bar tombol tetap menempel di atas viewport dan tidak tertutup konten",
+      "actual": "posisi bar top=0px setelah scroll; tombol tidak tertutup",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A3-02-buttons-desktop-sticky.png"
+      ]
+    },
+    {
+      "task": "A3",
+      "id": "A3-03",
+      "title": "Link WhatsApp & LINE",
+      "steps": [
+        "Periksa tujuan tombol WhatsApp",
+        "Klik WhatsApp",
+        "Periksa tombol LINE"
+      ],
+      "expected": "WhatsApp → wa.me/6282252081212 di tab baru; LINE tampil sebagai label (URL belum tersedia)",
+      "actual": "WhatsApp href=https://wa.me/6282252081212 (target=_blank); tab baru membuka https://api.whatsapp.com/send/?phone=6282252081212&text&type=phone_num; LINE = <span> tanpa href",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A4",
+      "id": "A4-01",
+      "title": "Footer navigation hanya 4 link",
+      "steps": [
+        "Scroll ke footer",
+        "Periksa kelompok link navigasi"
+      ],
+      "expected": "Hanya FAQ, Contact Us, PDPA, Privacy Policy (tanpa Twitter / link lain)",
+      "actual": "FAQ, Contact Us, PDPA, Privacy Policy; Twitter di halaman: tidak ada",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A4-01-footer-links.png"
+      ]
+    },
+    {
+      "task": "A8",
+      "id": "A8-01",
+      "title": "Social media footer lengkap",
+      "steps": [
+        "Lihat footer",
+        "Periksa label & tujuan link social"
+      ],
+      "expected": "Facebook, LinkedIn, Instagram, TikTok, YouTube tampil dengan link (dummy \"task14\"), aria-label tersedia",
+      "actual": "Facebook → https://www.facebook.com/task14; LinkedIn → https://www.linkedin.com/company/task14; Instagram → https://www.instagram.com/task14; TikTok → https://www.tiktok.com/@task14; YouTube → https://www.youtube.com/@task14; aria-label=\"Social media\"",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A8-01-footer-social-desktop.png"
+      ]
+    },
+    {
+      "task": "A6",
+      "id": "A6-01",
+      "title": "Field Digital Nomad tampil dengan pilihan Ya/Tidak",
+      "steps": [
+        "Scroll ke form booking",
+        "Periksa field \"Digital Nomad\""
+      ],
+      "expected": "Label \"Digital Nomad\", pilihan Ya dan Tidak, wajib diisi",
+      "actual": "legend \"Digital Nomad\", opsi: Ya (required), Tidak (required)",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A6-01-digital-nomad-field.png"
+      ]
+    },
+    {
+      "task": "A6",
+      "id": "A6-02",
+      "title": "Ya dan Tidak dapat dipilih",
+      "steps": [
+        "Klik label \"Ya\"",
+        "Klik label \"Tidak\""
+      ],
+      "expected": "Masing-masing dapat dipilih dan saling eksklusif",
+      "actual": "Ya terpilih: true; Tidak terpilih & Ya lepas: true",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A9",
+      "id": "A9-01",
+      "title": "Checkbox Host Terms tampil dengan label persis",
+      "steps": [
+        "Periksa checkbox persetujuan"
+      ],
+      "expected": "Label persis \"I agree to the Host Terms\", wajib dicentang",
+      "actual": "label \"I agree to the Host Terms\", required=true",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A9-01-host-terms-checkbox.png"
+      ]
+    },
+    {
+      "task": "A11",
+      "id": "A11-01",
+      "title": "Plan Daily → total RM 350",
+      "steps": [
+        "Pilih plan \"Daily\""
+      ],
+      "expected": "Total berubah langsung menjadi \"Total: RM 350\"",
+      "actual": "Total: RM 350",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A11-01-plan-daily.png"
+      ]
+    },
+    {
+      "task": "A11",
+      "id": "A11-02",
+      "title": "Plan Monthly → total RM 8,400",
+      "steps": [
+        "Pilih plan \"Monthly\""
+      ],
+      "expected": "Total berubah langsung menjadi \"Total: RM 8,400\" (350 × 30 × 0.8)",
+      "actual": "Total: RM 8,400; reload halaman: tidak",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A11-02-plan-monthly.png"
+      ]
+    },
+    {
+      "task": "A11",
+      "id": "A11-03",
+      "title": "Harga tidak bergantung pada trail",
+      "steps": [
+        "Plan Monthly tetap terpilih",
+        "Filter listing ke \"kinabalu\" lalu ke kategori lain"
+      ],
+      "expected": "Total tetap RM 8,400",
+      "actual": "setelah search: Total: RM 8,400; setelah kategori: Total: RM 8,400",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A6",
+      "id": "A6-03",
+      "title": "Submit tanpa memilih Digital Nomad ditolak",
+      "steps": [
+        "Isi Name, Date, Plan, centang Host Terms",
+        "Jangan pilih Digital Nomad",
+        "Klik \"Request booking\""
+      ],
+      "expected": "Browser menolak submit dan meminta memilih opsi; tidak ada request ke server",
+      "actual": "request POST: 0; pesan browser: \"Please select one of these options.\"",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A9",
+      "id": "A9-02",
+      "title": "Submit tanpa centang Host Terms ditolak",
+      "steps": [
+        "Isi semua field, pilih Digital Nomad",
+        "Jangan centang Host Terms",
+        "Klik \"Request booking\""
+      ],
+      "expected": "Browser menolak submit; tidak ada request ke server",
+      "actual": "request POST: 0; pesan browser: \"Please check this box if you want to proceed.\"",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A11",
+      "id": "A11-04",
+      "title": "Submit tanpa memilih plan ditolak",
+      "steps": [
+        "Reset form, isi field lain, jangan pilih plan",
+        "Klik \"Request booking\""
+      ],
+      "expected": "Browser menolak submit; total tetap \"Total: -\"",
+      "actual": "pesan browser: \"Please select one of these options.\"",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A12",
+      "id": "A12-01",
+      "title": "Booking valid → pesan sukses otomatis",
+      "steps": [
+        "Isi Name \"UAT Tester\", Date 2026-12-01, Digital Nomad \"Ya\", Plan \"Monthly\", centang Host Terms",
+        "Klik \"Request booking\""
+      ],
+      "expected": "Server menjawab sukses; pesan konfirmasi tampil otomatis dengan total RM 8,400; form di-reset; booking tersimpan di server",
+      "actual": "HTTP 200 success=true; pesan: \"Thank you, UAT Tester! Your booking has been received: Monthly plan from 2026-12-01. Total: RM 8,400.\"; form reset: true; data tersimpan: {\"name\":\"UAT Tester\",\"date\":\"2026-12-01\",\"digital_nomad\":\"Ya\",\"plan\":\"monthly\",\"price\":8400,\"host_terms\":true}",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A12-01a-form-filled.png",
+        "screenshots/A12-01b-success-message.png"
+      ]
+    },
+    {
+      "task": "A12",
+      "id": "A12-02",
+      "title": "Tidak ada popup alert palsu",
+      "steps": [
+        "Amati selama submit A12-01"
+      ],
+      "expected": "Tidak ada alert() — konfirmasi hanya di halaman",
+      "actual": "jumlah alert: 0",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A12",
+      "id": "A12-03",
+      "title": "Booking ditolak server → pesan error, tanpa sukses",
+      "steps": [
+        "Simulasikan klien yang melewati validasi browser (atribut required dihapus)",
+        "Kosongkan semua field, klik \"Request booking\""
+      ],
+      "expected": "Pesan error merah berisi daftar kesalahan per field; pesan sukses tidak tampil; tidak ada data tersimpan",
+      "actual": "class=is-error; pesan: \"Your booking was not sent. Please fix the following: · Please enter your name. · Please choose a valid date. · Please choose Ya or Tidak for Digital Nomad. · Please choose a Daily or Monthly plan. · You must agree to the Host Terms to request a booking.\"; data server berubah: false",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A12-03-server-validation-error.png"
+      ]
+    },
+    {
+      "task": "A12",
+      "id": "A12-04",
+      "title": "Koneksi gagal → pesan error",
+      "steps": [
+        "Isi form valid",
+        "Putuskan request ke server (simulasi jaringan gagal)",
+        "Klik \"Request booking\""
+      ],
+      "expected": "Pesan error koneksi tampil; tidak ada pesan sukses; tombol aktif kembali",
+      "actual": "class=is-error; pesan: \"Could not reach the server. Please check your connection and try again.\"; tombol aktif: true",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A12-04-network-error.png"
+      ]
+    },
+    {
+      "task": "A12",
+      "id": "A12-05",
+      "title": "Mencegah submit ganda",
+      "steps": [
+        "Isi form valid",
+        "Klik \"Request booking\" lalu submit lagi 2× selagi request berjalan (server diperlambat 800ms)"
+      ],
+      "expected": "Hanya 1 request terkirim; tombol nonaktif selama proses",
+      "actual": "request POST: 1; tombol nonaktif saat proses: true; hasil: is-success",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A12-05-button-disabled-while-sending.png"
+      ]
+    },
+    {
+      "task": "A11",
+      "id": "A11-05",
+      "title": "Harga dimanipulasi di browser tetap dihitung server",
+      "steps": [
+        "Pilih Monthly",
+        "Ubah data-price di browser menjadi 1 (tampilan jadi RM 1)",
+        "Submit booking"
+      ],
+      "expected": "Server tetap mengenakan RM 8,400 dan pesan sukses menampilkan RM 8,400",
+      "actual": "tampilan browser \"Total: RM 1\"; pesan server: \"Thank you, UAT Tamper! Your booking has been received: Monthly plan from 2026-12-01. Total: RM 8,400.\"; harga tersimpan: 8400",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A11-05a-tampered-ui-total.png",
+        "screenshots/A11-05b-server-price-wins.png"
+      ]
+    },
+    {
+      "task": "A6",
+      "id": "A6-04",
+      "title": "Server menolak nilai Digital Nomad selain Ya/Tidak (\"Maybe\")",
+      "steps": [
+        "Kirim POST langsung ke server dengan nonce halaman",
+        "Field: booking_name=UAT API, date=2026-12-02, digital_nomad=Maybe, plan=daily, host_terms=1"
+      ],
+      "expected": "HTTP 400, success=false, pesan mengandung \"Digital Nomad\"",
+      "actual": "HTTP 400, success=false: Your booking was not sent. Please fix the following: / Please choose Ya or Tidak for Digital Nomad.",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A6",
+      "id": "A6-05",
+      "title": "Server menolak Digital Nomad kosong",
+      "steps": [
+        "Kirim POST langsung ke server dengan nonce halaman",
+        "Field: booking_name=UAT API, date=2026-12-02, plan=daily, host_terms=1"
+      ],
+      "expected": "HTTP 400, success=false, pesan mengandung \"Digital Nomad\"",
+      "actual": "HTTP 400, success=false: Your booking was not sent. Please fix the following: / Please choose Ya or Tidak for Digital Nomad.",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A9",
+      "id": "A9-03",
+      "title": "Server menolak booking tanpa persetujuan Host Terms",
+      "steps": [
+        "Kirim POST langsung ke server dengan nonce halaman",
+        "Field: booking_name=UAT API, date=2026-12-02, digital_nomad=Ya, plan=daily"
+      ],
+      "expected": "HTTP 400, success=false, pesan mengandung \"Host Terms\"",
+      "actual": "HTTP 400, success=false: Your booking was not sent. Please fix the following: / You must agree to the Host Terms to request a booking.",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A9",
+      "id": "A9-04",
+      "title": "Server menolak nilai persetujuan palsu (\"on\")",
+      "steps": [
+        "Kirim POST langsung ke server dengan nonce halaman",
+        "Field: booking_name=UAT API, date=2026-12-02, digital_nomad=Ya, plan=daily, host_terms=on"
+      ],
+      "expected": "HTTP 400, success=false, pesan mengandung \"Host Terms\"",
+      "actual": "HTTP 400, success=false: Your booking was not sent. Please fix the following: / You must agree to the Host Terms to request a booking.",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A11",
+      "id": "A11-06",
+      "title": "Server menolak plan tidak dikenal (\"weekly\")",
+      "steps": [
+        "Kirim POST langsung ke server dengan nonce halaman",
+        "Field: booking_name=UAT API, date=2026-12-02, digital_nomad=Ya, plan=weekly, host_terms=1"
+      ],
+      "expected": "HTTP 400, success=false, pesan mengandung \"Daily or Monthly\"",
+      "actual": "HTTP 400, success=false: Your booking was not sent. Please fix the following: / Please choose a Daily or Monthly plan.",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A12",
+      "id": "A12-06",
+      "title": "Server menolak nonce palsu",
+      "steps": [
+        "Kirim POST langsung ke server dengan nonce halaman",
+        "Field: trails_booking_nonce=forged0000, booking_name=UAT API, date=2026-12-02, digital_nomad=Ya, plan=daily, host_terms=1"
+      ],
+      "expected": "HTTP 400, success=false, pesan mengandung \"session has expired\"",
+      "actual": "HTTP 400, success=false: Your session has expired. Please reload the page and try again.",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A12",
+      "id": "A12-07",
+      "title": "Server menolak tanggal tidak valid (2026-02-30)",
+      "steps": [
+        "Kirim POST langsung ke server dengan nonce halaman",
+        "Field: booking_name=UAT API, date=2026-02-30, digital_nomad=Ya, plan=daily, host_terms=1"
+      ],
+      "expected": "HTTP 400, success=false, pesan mengandung \"valid date\"",
+      "actual": "HTTP 400, success=false: Your booking was not sent. Please fix the following: / Please choose a valid date.",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A11",
+      "id": "A11-07",
+      "title": "Server mengabaikan field price/total dari browser",
+      "steps": [
+        "Kirim POST plan=monthly dengan price=1 dan total=1"
+      ],
+      "expected": "HTTP 200; pesan menampilkan RM 8,400",
+      "actual": "HTTP 200: Thank you, UAT API! Your booking has been received: Monthly plan from 2026-12-02. Total: RM 8,400.",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A12",
+      "id": "A12-08",
+      "title": "Tanpa JavaScript: booking tetap berjalan",
+      "steps": [
+        "Nonaktifkan JavaScript",
+        "Isi form valid dan submit"
+      ],
+      "expected": "Halaman memuat ulang dengan pesan sukses dari server",
+      "actual": "pesan: \"Thank you, UAT NoJS! Your booking has been received: Monthly plan from 2026-12-01. Total: RM 8,400.\"",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A12-08-no-js-success.png"
+      ]
+    },
+    {
+      "task": "A12",
+      "id": "A12-09",
+      "title": "Pesan sukses tidak bisa dipalsukan lewat URL",
+      "steps": [
+        "Buka halaman dengan ?booking=success"
+      ],
+      "expected": "Tidak ada pesan sukses yang tampil",
+      "actual": "kotak konfirmasi tersembunyi",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "A7",
+      "id": "A7-01",
+      "title": "Mobile 390px: tidak ada scroll horizontal",
+      "steps": [
+        "Buka halaman di viewport 390px",
+        "Coba geser halaman ke kanan"
+      ],
+      "expected": "Lebar halaman = 390px; halaman tidak bisa digeser horizontal; tidak ada elemen keluar viewport",
+      "actual": "scrollWidth 390px / viewport 390px; scrollX setelah digeser: 0; elemen keluar viewport: 0",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A7-01-mobile-390-fullpage.png"
+      ]
+    },
+    {
+      "task": "A7",
+      "id": "A7-02",
+      "title": "Mobile 390px: semua section tampil",
+      "steps": [
+        "Periksa section utama satu per satu"
+      ],
+      "expected": "Contact bar, header, promo, search, listing, form booking, footer semuanya tampil",
+      "actual": "Contact bar: tampil; Header: tampil; Promo: tampil; Search & kategori: tampil; Listing: tampil; Form booking: tampil; Footer: tampil",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A7-02-mobile-promo-visible.png"
+      ]
+    },
+    {
+      "task": "A7",
+      "id": "A7-03",
+      "title": "Mobile 390px: form & CTA dapat dipakai",
+      "steps": [
+        "Isi form booking di 390px dan submit"
+      ],
+      "expected": "Semua field di dalam viewport; booking berhasil",
+      "actual": "form berakhir di x=370px; pesan: \"Thank you, UAT Mobile! Your booking has been received: Daily plan from 2026-12-01. Total: RM 350.\"",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A7-03-mobile-booking-success.png"
+      ]
+    },
+    {
+      "task": "A3",
+      "id": "A3-04",
+      "title": "Mobile 390px: tombol sticky & menu tetap bisa dipakai",
+      "steps": [
+        "Lihat bagian atas di 390px",
+        "Buka menu hamburger",
+        "Scroll ke bawah"
+      ],
+      "expected": "Tombol tampil tanpa overflow; dropdown menu tidak tertutup tombol; tombol menempel di atas saat scroll",
+      "actual": "tombol muat di layar: true; menu dropdown dapat diklik: true; top bar saat scroll: 0px",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A3-04a-buttons-mobile-top.png",
+        "screenshots/A3-04b-mobile-menu-open.png",
+        "screenshots/A3-04c-buttons-mobile-sticky.png"
+      ]
+    },
+    {
+      "task": "A8",
+      "id": "A8-02",
+      "title": "Mobile 390px: footer social rapi tanpa overflow",
+      "steps": [
+        "Scroll ke footer di 390px"
+      ],
+      "expected": "Semua item social terlihat, membungkus ke baris berikutnya bila perlu, tidak keluar layar",
+      "actual": "5 item, posisi kanan maks 339px",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A8-02-footer-social-mobile.png"
+      ]
+    },
+    {
+      "task": "A3",
+      "id": "A3-05",
+      "title": "Login (admin bar): tombol sticky tidak tertutup admin bar",
+      "steps": [
+        "Login ke WordPress",
+        "Buka halaman, scroll ke bawah"
+      ],
+      "expected": "Bar tombol menempel tepat di bawah admin bar (32px)",
+      "actual": "admin bar: ada; top bar saat scroll: 32px",
+      "status": "PASS",
+      "shots": [
+        "screenshots/A3-05-logged-in-admin-bar-sticky.png"
+      ]
+    },
+    {
+      "task": "UMUM",
+      "id": "G-01",
+      "title": "Tidak ada error JavaScript di halaman trails",
+      "steps": [
+        "Kumpulkan error console selama skenario desktop & mobile"
+      ],
+      "expected": "Tidak ada error JS (respons 400 dari skenario penolakan server dan koneksi gagal A12-04 sengaja dipicu, sehingga dikecualikan)",
+      "actual": "tidak ada error",
+      "status": "PASS",
+      "shots": []
+    },
+    {
+      "task": "UMUM",
+      "id": "G-02",
+      "title": "Halaman lain (tanpa listing/form) tidak error",
+      "steps": [
+        "Buka halaman post biasa (/?p=1) yang tetap memuat trails.js"
+      ],
+      "expected": "Tidak ada error JavaScript",
+      "actual": "trails.js dimuat: true; error: tidak ada",
+      "status": "PASS",
+      "shots": []
+    }
+  ]
+}
