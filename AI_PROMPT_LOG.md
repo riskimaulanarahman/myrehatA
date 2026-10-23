@@ -1243,3 +1243,116 @@ Measured by firing `do_action` directly in the real WordPress copy against the o
 - Each trail creates its own autoloaded option (existing design). For many trails, post meta or `autoload = false` would scale better. Not changed.
 
 ---
+
+## Elementor Hero Rebuild
+
+Date:
+`2026-10-23 17:23`
+
+### Request
+
+Rebuild the hero section using Elementor and export the resulting template as JSON.
+
+### AI Instruction
+
+Browser automation was instructed to audit the existing Elementor hero, rebuild only the hero section, verify desktop and 390px layouts, save the page, export the hero as an Elementor JSON template, and verify the exported file.
+
+### Browser Automation
+
+Tool:
+`Playwright` (1.62.1, driving Chrome 155). Script: `scripts/elementor-hero-rebuild.js`. Credentials come from env vars `WP_USER`/`WP_PASS` only and are never printed.
+
+### Page
+
+Title:
+Trails (front page, template "Trails Test Page" / `page-trails.php`)
+
+Page ID:
+4
+
+Public URL:
+`http://127.0.0.1:8770/` (isolated WordPress copy, see Remaining Notes)
+
+### Existing Hero Audit
+
+- **Not an Elementor hero.** `<header class="site-header-trails">` was hardcoded in `page-trails.php`: `h1` "Tropic Hiking Trails" (32px/500, system font, white), `p` "Find your next trail with MyRehat" (16px), and search input `#main-search` ("Search homepage...", 420px, used by A10). No CTA, no image. Solid `#0c6b4f`, padding 32px 20px, centred, 223px tall at both 1440px and 390px. No mobile typography rules.
+- Page #4 had no Elementor data, and **the template did not call `the_content()`**. The editor confirmed this: *"Sorry, the content area was not found in your page. You must call 'the_content' function…"* (`elementor-editor-before-no-content-area.png`).
+- Elementor 4.3.4 with both the classic **Container** experiment and atomic (V4) elements active. "Add New Container → Flexbox" creates an atomic Flexbox.
+- Environment-only blocker in the isolated copy: "Your site doesn't have a default kit" (Elementor had been activated programmatically, skipping kit creation; `elementor-editor-no-kit.png`). Resolved through **Elementor → Tools → Recreate Kit** (UI; AJAX `{"success":true}`, kit #10 "Default Kit" with default settings). The production site already has a kit (`uploads/elementor/css/post-4.css` → `.elementor-kit-4`).
+
+### Changes Made
+
+- **Theme, hero slot only:**
+  - `page-trails.php` renders `the_content()` in the hero position when `myrehat_test_hero_from_elementor()` is true (page open in the Elementor editor, or built with Elementor *and* has elements). Otherwise it renders the original hardcoded hero unchanged as a fallback.
+  - The "has elements" condition was added after testing showed that **merely opening the editor marks a page as built with Elementor**, which made the hero disappear while the document was still empty.
+  - The listing, booking form, contact bar, and footer are still rendered by the template and are untouched.
+- `style.css`: `.site-header-trails #main-search` changed to `#main-search { display:block; margin:14px auto 0; … }`, so the search box keeps its existing style and stays centred inside the Elementor HTML widget (looks identical in the fallback hero).
+- **Elementor, built entirely through the editor UI with real mouse drag-and-drop from the panel into the canvas iframe** (no JSON written by hand, no internal JS API):
+  - **Structure used: classic Container** (Layout → Container, flex column) with **Heading, Text Editor, HTML**. Atomic V4 was not used because the search box needs an input element, and V4 offers only the Pro "Atomic Form". No experiment was toggled.
+  - Container: Align Items Center; Background Classic `#0C6B4F`; Padding 32/20/32/20 (desktop), 24/16/24/16 (mobile); CSS class `trails-hero`.
+  - Heading: "Tropic Hiking Trails", H1, centred, `#FFFFFF`, 32px desktop / 28px mobile.
+  - Text Editor (Code tab): "Find your next trail with MyRehat", centred, `#FFFFFF`, 16px.
+  - HTML: the original `<input id="main-search" type="text" placeholder="Search homepage...">`, width "Full Width (100%)". No new copy.
+  - Mobile values were set in Elementor's Mobile Portrait mode (top-bar tab). Elements were selected through the Structure navigator.
+  - Published with **Publish** (`save_builder success=true`), then saved as a site template "Trails Hero" via the context menu → "Save as a template" → Site Templates.
+- `docs/uat/uat-e2e.js`: hero selector updated to `.trails-hero, .site-header-trails`, and `.elementor-screen-only` excluded from the off-screen element check, so the existing UAT keeps working with the Elementor hero. **The UAT report and screenshots in `docs/uat/` were not regenerated.**
+
+### Responsive Verification
+
+Desktop:
+Public page at 1440×900: `scrollWidth` 1440/1440, everything inside the viewport. H1 32px white centred on `rgb(12,107,79)`, padding 32px (block, on `.e-con-inner`) and 20px (inline). Text present. Search input 420px at x 510–930, centred.
+
+390px:
+`scrollWidth` 390, nothing outside the viewport. H1 28px on 1 line, padding 24px/16px, search input at x 34–356, tappable (focus received).
+
+### Files / Artifacts Generated
+
+- `scripts/elementor-hero-rebuild.js` (automation; env-based credentials)
+- `artifacts/elementor/hero-template.json` (real Elementor export)
+- `artifacts/elementor/run-report.json` (steps and checks of the final run)
+- `artifacts/screenshots/*.png` (12 files)
+- Theme: `wp-content/themes/myrehat-test/functions.php`, `page-trails.php`, `style.css`. Test tooling: `docs/uat/uat-e2e.js`.
+
+### Elementor JSON
+
+File:
+`artifacts/elementor/hero-template.json`. The Playwright download event gave the original name `elementor-47-2026-10-23.json`, saved under the suggested name. Exported from **Templates → Saved Templates → "Export Container"** (Elementor labels the action by template type; it calls `library_action=export_template`). 1449 bytes.
+
+Validation:
+- JSON parse PASS (starts with `{`, not HTML).
+- Structure PASS: `version` 0.4, `type` "container", `title` "Trails Hero", `content` array.
+- Hero content detected: container → heading (`title` "Tropic Hiking Trails", `header_size` h1), text-editor, html (`#main-search`). Desktop and mobile padding and font sizes present.
+- Credential exposure: NONE (the env user/password values and generic secret patterns are absent).
+
+### Screenshots
+
+- Before: `elementor-before.png` (public 1440), `elementor-before-390.png`, `elementor-editor-before-no-content-area.png` (editor blocked by template), `elementor-editor-no-kit.png` (environment kit issue), `elementor-editor-before.png` (empty Elementor document at the start of the rebuild)
+- Editor: `elementor-editor-after-desktop.png`, `elementor-editor-after-mobile.png` (Structure: Container → Heading, Text Editor, HTML)
+- After save: `elementor-after-save.png`
+- After: `elementor-after-desktop.png`, `elementor-after-390.png` (hero), `elementor-public-after.png`, `elementor-public-after-390.png` (full page)
+- None of them contain the login page or credentials.
+
+### Regression Check
+
+- Final script run from a clean state: **26/26 checks pass**. Publish succeeded, the hero persisted after an editor reload, the public old hero was replaced, there are no broken images and no public console errors, and the A10 header search inside the Elementor hero still filters the listing and syncs.
+- Full A1–A12 suite on the real WordPress copy (1280px and 390px, logged in and out, booking AJAX, no-JS POST): **200/200**.
+- UAT script (scratch copy, so `docs/uat` was not overwritten): **53/53**. B2 security suite: **33/33**. WP `debug.log`: 0 theme entries.
+- Findings in the test tooling (not product defects), fixed in the tests:
+  - `SPAN.elementor-screen-only` was counted as "outside the viewport". It is Elementor's visually-hidden text, with the same CSS rule as `.screen-reader-text`, and there was no scroll.
+  - Elementor adds `html{scroll-behavior:smooth}`. With JS off, Playwright's automatic scroll stalls on it. A real user with JS off scrolling by wheel reaches the form and gets the server-rendered success message (verified).
+- Editor console: WordPress core `wp-auth-check.js` throws `Cannot read properties of undefined (reading 'hasClass')` on a heartbeat tick inside the Elementor editor. This was reproduced on an untouched post (#1), so it is unrelated to the hero. It is recorded as a known core issue and is excluded from the hero check only.
+
+### Result
+
+`PARTIAL`. Every hero criterion passes on a real WordPress runtime: built through the Elementor UI, desktop and 390px verified, published and persisted, real JSON export validated, no regressions. It is PARTIAL because the work ran on the **isolated WordPress copy** (this site's database is not reachable). The Elementor page data and saved template exist only there, so applying it to the real site requires the theme change plus importing `hero-template.json` (or re-running the script) against that site.
+
+### Remaining Notes
+
+- Git: the theme source changed (hero slot plus one CSS selector), as did `docs/uat/uat-e2e.js`. New `scripts/` and `artifacts/`. The Elementor page changes and the "Trails Hero" template were stored in WordPress data in the isolated copy; that data has no corresponding source diff.
+- To apply on the real site: deploy the theme change, then either run `scripts/elementor-hero-rebuild.js` with `BASE_URL`/`WP_USER`/`WP_PASS` (the script expects an empty Elementor document on the front page), or import `artifacts/elementor/hero-template.json` via Templates → Import and insert it on the page.
+- The Elementor kit typography (Roboto 600) is now used for the hero H1, instead of the theme's system font at 500.
+- The search input still has no `<label>` or `aria-label`, carried over unchanged from the original hero. Not changed, to avoid new copy.
+- `docs/uat/README.md` and its screenshots still show the pre-Elementor hero. Regenerate them in final verification if wanted.
+- Scratch-only helpers (not in the repo): a reset script that clears page 4's Elementor data between development runs, and the earlier B2 test mu-plugin.
+
+---
