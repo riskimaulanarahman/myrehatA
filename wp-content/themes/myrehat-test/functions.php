@@ -13,9 +13,9 @@ function myrehat_test_assets() {
     );
 }
 
-// BUG P1: missing text domain — should be __( 'Book a guided hike', 'myrehat-test' ).
+// Heading of the booking section, translatable in the theme's text domain.
 function myrehat_test_booking_title() {
-    return __( 'Book a guided hike' );
+    return __( 'Book a guided hike', 'myrehat-test' );
 }
 
 /**
@@ -83,10 +83,12 @@ function myrehat_test_validate_booking( $input ) {
 
     // The field is "booking_name", not "name": "name" is a WordPress public query var and would turn the request into a 404.
     $name = isset( $input['booking_name'] ) ? sanitize_text_field( wp_unslash( $input['booking_name'] ) ) : '';
-    if ( '' !== $name ) {
-        $booking['name'] = $name;
-    } else {
+    if ( '' === $name ) {
         $errors['booking_name'] = __( 'Please enter your name.', 'myrehat-test' );
+    } elseif ( mb_strlen( $name ) > 100 ) {
+        $errors['booking_name'] = __( 'Your name must be 100 characters or fewer.', 'myrehat-test' );
+    } else {
+        $booking['name'] = $name;
     }
 
     $date  = isset( $input['date'] ) ? sanitize_text_field( wp_unslash( $input['date'] ) ) : '';
@@ -125,6 +127,17 @@ function myrehat_test_validate_booking( $input ) {
 }
 
 /**
+ * Stores a validated booking. Returns true only when the booking is actually stored.
+ *
+ * set_transient() also returns false when the stored value is unchanged (the same booking
+ * submitted twice), so that case is confirmed by reading the value back.
+ */
+function myrehat_test_save_booking( $booking ) {
+    return set_transient( 'trails_last_booking', $booking, HOUR_IN_SECONDS )
+        || get_transient( 'trails_last_booking' ) === $booking;
+}
+
+/**
  * Handles booking form submissions (nonce check, validation, save).
  *
  * AJAX submissions (ajax=1) get a JSON response; success is only reported once the booking is saved.
@@ -145,7 +158,7 @@ function myrehat_test_booking_handler() {
         list( $booking, $errors ) = myrehat_test_validate_booking( $_POST );
         if ( $errors ) {
             $message = __( 'Your booking was not sent. Please fix the following:', 'myrehat-test' );
-        } elseif ( ! set_transient( 'trails_last_booking', $booking, HOUR_IN_SECONDS ) ) {
+        } elseif ( ! myrehat_test_save_booking( $booking ) ) {
             $message = __( 'We could not save your booking. Please try again.', 'myrehat-test' );
         } else {
             $plans   = myrehat_test_booking_plans();
@@ -162,7 +175,8 @@ function myrehat_test_booking_handler() {
     }
     $result = array( 'success' => $success, 'message' => $message, 'errors' => array_values( $errors ) );
 
-    if ( ! empty( $_POST['ajax'] ) ) {
+    // trails.js sends ajax=1; anything else gets the normal (server-rendered) response.
+    if ( isset( $_POST['ajax'] ) && '1' === $_POST['ajax'] ) {
         if ( $result['success'] ) {
             wp_send_json_success( array( 'message' => $result['message'] ), 200 );
         }
@@ -177,9 +191,28 @@ function myrehat_test_booking_result() {
     return isset( $GLOBALS['myrehat_test_booking_result'] ) ? $GLOBALS['myrehat_test_booking_result'] : null;
 }
 
-// BUG P3: callback expects 2 args but only 1 accepted — $trail_id is always null.
-add_action( 'myrehat_trail_viewed', 'myrehat_test_count_view', 10, 1 );
+// Returns $value as a positive integer, or 0 when it is not a whole number above zero (null, '', '42abc', 4.5, true, -5).
+function myrehat_test_positive_int( $value ) {
+    if ( is_int( $value ) || ( is_string( $value ) && ctype_digit( $value ) ) ) {
+        return max( 0, (int) $value );
+    }
+    return 0;
+}
+
+/**
+ * Counts a trail view. Fired as do_action( 'myrehat_trail_viewed', $trail_id, $count ).
+ *
+ * @param int|string $trail_id Trail ID (positive integer).
+ * @param int|string $count    Views to add (positive integer, default 1).
+ */
+add_action( 'myrehat_trail_viewed', 'myrehat_test_count_view', 10, 2 );
 function myrehat_test_count_view( $trail_id, $count = 1 ) {
+    $trail_id = myrehat_test_positive_int( $trail_id );
+    $count    = myrehat_test_positive_int( $count );
+    if ( ! $trail_id || ! $count ) {
+        return; // Never count under an empty or invalid ID.
+    }
+
     $key = 'trail_views_' . $trail_id;
     $total = (int) get_option( $key, 0 );
     update_option( $key, $total + $count );

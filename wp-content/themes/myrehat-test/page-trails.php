@@ -75,7 +75,7 @@ $contact_links = array(
     <form id="booking-form" method="post">
       <input type="hidden" name="trails_booking" value="1">
       <?php wp_nonce_field( 'myrehat_test_booking', 'trails_booking_nonce' ); ?>
-      <label>Name <input type="text" name="booking_name" required></label>
+      <label>Name <input type="text" name="booking_name" maxlength="100" required></label>
       <label>Date <input type="date" name="date" required></label>
       <fieldset class="trails-choice">
         <legend>Digital Nomad</legend>
