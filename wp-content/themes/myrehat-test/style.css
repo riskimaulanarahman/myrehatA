@@ -1,0 +1,36 @@
+/*
+Theme Name: MyRehat Test
+Theme URI: https://myrehat.com/
+Description: Child theme of Hello Elementor for Junior SE practical test. Contains intentional bugs.
+Author: MyRehat
+Template: hello-elementor
+Version: 1.0.0
+Text Domain: myrehat-test
+*/
+
+/* Trails test page styles */
+.site-header-trails { background: #0c6b4f; color: #fff; padding: 32px 20px; text-align: center; }
+.site-header-trails h1 { font-size: 32px; color: #fff; }
+.site-header-trails #main-search { margin-top: 14px; padding: 10px; font-size: 15px; width: min(420px, 90%); }
+.trails-promo { background: #fff3cd; padding: 12px 20px; text-align: center; }
+.trails-main { max-width: 1000px; margin: 0 auto; padding: 20px; }
+.trails-search-row { display: flex; gap: 10px; margin-bottom: 16px; }
+.trails-search-row input, .trails-search-row select { padding: 10px; font-size: 15px; flex: 1; }
+.trails-cards { display: flex; gap: 14px; }
+.trail-card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; min-width: 320px; background: #fff; }
+.trail-card h3 { font-size: 17px; margin-bottom: 6px; }
+.trail-card .price { font-weight: bold; color: #0c6b4f; }
+#trails-no-results { color: #a00; margin: 12px 0; }
+.trails-booking { margin-top: 28px; border-top: 2px solid #eee; padding-top: 18px; }
+.trails-booking form { display: flex; flex-direction: column; gap: 10px; max-width: 420px; }
+.trails-booking input { padding: 9px; font-size: 15px; }
+.trails-booking button { padding: 11px; background: #0c6b4f; color: #fff; border: 0; cursor: pointer; }
+#trails-total { font-weight: bold; }
+#trails-confirmation { margin-top: 12px; border: 1px solid #0c6b4f; border-radius: 8px; padding: 12px; background: #eef7f2; }
+.trails-footer { background: #222; color: #ccc; padding: 22px 20px; margin-top: 30px; text-align: center; }
+.trails-footer nav { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 10px; }
+.trails-footer a { color: #ccc; }
+@media (max-width: 600px) {
+  .trails-promo { display: none; }
+  .trails-search-row { flex-direction: column; }
+}

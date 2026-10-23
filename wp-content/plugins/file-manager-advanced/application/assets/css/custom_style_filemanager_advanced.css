@@ -1,0 +1,1323 @@
+/* PHP Validation Styles */
+
+/* CodeMirror editor polish (elFinder edit dialog) */
+.elfinder-dialog:not(.fma-editor-modal-dialog):not(.elfinder-dialog-notify) .ui-dialog-content,
+.elfinder-dialog.fma-editor-modal-dialog.elfinder-maximized .ui-dialog-content {
+  min-height: 400px;
+}
+
+/* Keep elFinder overlay inside the file manager — not full WordPress viewport */
+.elfinder>.elfinder-overlay.ui-widget-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Hide dim overlay while normal editor is open */
+.elfinder:has(.elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized))>.elfinder-overlay {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Normal-mode code editor — compact centered popup inside elFinder */
+.elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) {
+  margin: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) .ui-dialog-titlebar {
+  display: block;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) .ui-dialog-content,
+.elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) .ui-dialog-content.elfinder-edit-editor {
+  display: block !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  box-sizing: border-box;
+  padding: 0 !important;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) .ui-dialog-buttonpane {
+  display: block;
+  flex: none;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) .fma-cm-editor-panel {
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) .fma-cm-editor-panel .fma-cm-editor.CodeMirror {
+  height: 100% !important;
+}
+
+@media screen and (max-width: 782px) {
+  .elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) {
+    min-width: 0;
+    width: calc(100% - 16px) !important;
+    max-width: calc(100% - 16px) !important;
+  }
+}
+
+/* Maximized edit dialog — true viewport fullscreen (escapes transformed parents) */
+body.fma-editor-maximized-open {
+  overflow: hidden !important;
+}
+
+.elfinder-dialog.elfinder-maximized.ui-dialog {
+  position: fixed !important;
+  inset: 0 !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  z-index: 100100 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+}
+
+body.admin-bar .elfinder-dialog.elfinder-maximized.ui-dialog {
+  top: 32px !important;
+  height: calc(100vh - 32px) !important;
+}
+
+@media screen and (max-width: 782px) {
+  body.admin-bar .elfinder-dialog.elfinder-maximized.ui-dialog {
+    top: 46px !important;
+    height: calc(100vh - 46px) !important;
+  }
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-titlebar {
+  flex: 0 0 auto;
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-content {
+  flex: 1 1 auto;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 0 !important;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-maximized-split {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-maximized-sidebar {
+  flex: 0 0 auto;
+  width: 280px;
+  min-width: 220px;
+  max-width: 420px;
+  height: 100%;
+  overflow: hidden;
+  border-right: 1px solid #e2e8f0;
+  background: #f8fafc;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* VS Code–style explorer (folders + files in one tree) */
+.elfinder-dialog.elfinder-maximized .fma-vscode-explorer {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-explorer-head {
+  flex: 0 0 auto;
+  padding: 10px 12px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-tree-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  background: #f8fafc;
+  position: relative;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-tree-wrap.is-loading .fma-vscode-tree {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-tree-skeleton {
+  display: none;
+  padding: 6px 0 10px;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-tree-wrap.is-loading .fma-vscode-tree-skeleton {
+  display: block;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-skeleton-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 0;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-skeleton-icon {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #e2e8f0 0%, #f8fafc 45%, #e2e8f0 90%);
+  background-size: 200% 100%;
+  animation: fma-explorer-skeleton-shimmer 1.15s ease-in-out infinite;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-skeleton-line {
+  display: block;
+  flex: 0 1 auto;
+  height: 10px;
+  max-width: 200px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #e2e8f0 0%, #f8fafc 45%, #e2e8f0 90%);
+  background-size: 200% 100%;
+  animation: fma-explorer-skeleton-shimmer 1.15s ease-in-out infinite;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-skeleton-row:nth-child(odd) .fma-vscode-skeleton-line {
+  animation-delay: 0.12s;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-skeleton-row:nth-child(3n) .fma-vscode-skeleton-icon {
+  animation-delay: 0.18s;
+}
+
+@keyframes fma-explorer-skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-tree,
+.elfinder-dialog.elfinder-maximized .fma-vscode-tree-root,
+.elfinder-dialog.elfinder-maximized .fma-vscode-children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-node {
+  margin: 0;
+  padding: 0;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #1e293b;
+  font-size: 13px;
+  line-height: 1.4;
+  padding: 4px 8px 4px 0;
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-row:hover {
+  background: rgba(63, 105, 114, 0.1);
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-node.is-active>.fma-vscode-row {
+  background: #3f6972;
+  color: #ffffff;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-row.is-loading {
+  opacity: 0.65;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-twistie {
+  flex: 0 0 14px;
+  width: 14px;
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+  user-select: none;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-node.is-active .fma-vscode-twistie {
+  color: #e2e8f0;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-twistie.is-empty {
+  visibility: hidden;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-icon.elfinder-cwd-icon {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  display: inline-block;
+  position: relative;
+  background-image: url("../../library/img/icons-small.png");
+  background-repeat: no-repeat;
+  opacity: 0.95;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-icon.elfinder-cwd-icon:before,
+.elfinder-dialog.elfinder-maximized .fma-vscode-icon.elfinder-cwd-icon:after {
+  content: none;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-node.is-active .fma-vscode-icon.elfinder-cwd-icon {
+  opacity: 1;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-vscode-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-maximized-editor {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* AFM-919: Code Pilot — legacy released Pro + Free 6.0 (modern Pro uses same class names) */
+#afmp-code-pilot-btn {
+  position: absolute;
+  bottom: 120px;
+  right: 20px;
+  z-index: 100101;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: auto;
+  height: auto;
+  line-height: 0;
+}
+
+#afmp-code-pilot-btn:hover {
+  transform: scale(1.1);
+}
+
+#afmp-code-pilot-btn .afmp-cp-btn-icon img {
+  width: 48px;
+  height: 48px;
+  background: #0b3c41;
+  border-radius: 50%;
+  padding: 6px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  display: block;
+  object-fit: contain;
+}
+
+#afmp-code-pilot-btn .afmp-cp-btn-tooltip {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #0b3c41;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#afmp-code-pilot-btn:hover .afmp-cp-btn-tooltip {
+  opacity: 1;
+  right: 70px;
+}
+
+#afmp-code-pilot-btn.panel-open {
+  display: none;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog #afmp-code-pilot-btn {
+  position: absolute !important;
+  z-index: 100101 !important;
+}
+
+.elfinder-dialog.elfinder-maximized #afmp-code-pilot-btn {
+  position: fixed !important;
+  z-index: 100102 !important;
+  pointer-events: auto;
+}
+
+#afmp-code-pilot-panel {
+  z-index: 100200 !important;
+}
+
+body.afmp-code-pilot-open #wpcontent {
+  margin-right: 380px !important;
+  box-sizing: border-box;
+  transition: margin-right 0.3s ease;
+}
+
+body.afmp-code-pilot-open #afm-file-manager-tab,
+body.afmp-code-pilot-open #file_manager_advanced,
+body.afmp-code-pilot-open #file_manager_advanced_proxy,
+body.afmp-code-pilot-open #file_manager_advanced .elfinder {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+
+body.afmp-code-pilot-open .elfinder-dialog.elfinder-maximized.ui-dialog {
+  width: calc(100vw - 380px) !important;
+  max-width: calc(100vw - 380px) !important;
+  left: 0 !important;
+  right: auto !important;
+}
+
+body.admin-bar.afmp-code-pilot-open .elfinder-dialog.elfinder-maximized.ui-dialog {
+  top: 32px !important;
+  height: calc(100vh - 32px) !important;
+}
+
+@media screen and (max-width: 782px) {
+  body.admin-bar.afmp-code-pilot-open .elfinder-dialog.elfinder-maximized.ui-dialog {
+    top: 46px !important;
+    height: calc(100vh - 46px) !important;
+  }
+}
+
+body.afmp-code-pilot-open .elfinder-dialog.fma-editor-modal-dialog:not(.elfinder-maximized) {
+  max-width: calc(100% - 32px) !important;
+}
+
+/* VS Code–style find / replace widget — top-right overlay (normal + fullscreen) */
+.elfinder-dialog .fma-cm-editor-panel,
+.elfinder-dialog.fma-editor-modal-dialog .fma-cm-editor-panel,
+.elfinder-dialog.elfinder-maximized .fma-maximized-editor {
+  position: relative;
+}
+
+.elfinder-dialog .fma-cm-editor-panel .fma-vscode-find-bar,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-bar,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-bar {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  z-index: 30;
+  width: min(480px, calc(100% - 28px));
+  max-width: 480px;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog .fma-cm-editor-panel .fma-vscode-find-bar.is-visible,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-bar.is-visible,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-bar.is-visible {
+  display: block;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-panel,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-panel {
+  pointer-events: auto;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.06);
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-row,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-replace-row,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-row,
+.elfinder-dialog.elfinder-maximized .fma-vscode-replace-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 30px;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-replace-row,
+.elfinder-dialog.elfinder-maximized .fma-vscode-replace-row {
+  display: none;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-replace-row.is-open,
+.elfinder-dialog.elfinder-maximized .fma-vscode-replace-row.is-open {
+  display: flex;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-spacer,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-spacer {
+  flex: 0 0 22px;
+  width: 22px;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-toggle,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-toggle {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 26px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0;
+  font-size: 11px;
+  line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-toggle.is-open,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-toggle.is-open {
+  transform: rotate(90deg);
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-input,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-replace-input,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-input,
+.elfinder-dialog.elfinder-maximized .fma-vscode-replace-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 28px;
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 1.35;
+  box-sizing: border-box;
+  background: #f8fafc;
+  color: #0f172a;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-input:focus,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-replace-input:focus,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-input:focus,
+.elfinder-dialog.elfinder-maximized .fma-vscode-replace-input:focus {
+  outline: none;
+  border-color: #3f6972;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(63, 105, 114, 0.18);
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-status,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-status {
+  flex: 0 0 auto;
+  min-width: 56px;
+  padding: 0 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-actions,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-replace-actions,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-actions,
+.elfinder-dialog.elfinder-maximized .fma-vscode-replace-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex: 0 0 auto;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-btn,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-opt,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-close,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-btn,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-opt,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-close {
+  flex: 0 0 auto;
+  height: 26px;
+  min-width: 26px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #475569;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-btn.fma-vscode-find-btn-text,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-btn.fma-vscode-find-btn-text {
+  min-width: 0;
+  padding: 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-opt.is-active,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-opt.is-active {
+  background: rgba(63, 105, 114, 0.14);
+  color: #3f6972;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-close,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-close {
+  font-size: 15px;
+  font-weight: 400;
+  color: #64748b;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-btn:hover,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-opt:hover,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-close:hover,
+.elfinder-dialog.fma-editor-modal-dialog .fma-vscode-find-toggle:hover,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-btn:hover,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-opt:hover,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-close:hover,
+.elfinder-dialog.elfinder-maximized .fma-vscode-find-toggle:hover {
+  background: #f1f5f9;
+  color: #0f172a;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-cm-search-match,
+.elfinder-dialog.elfinder-maximized .fma-cm-search-match {
+  background: rgba(250, 204, 21, 0.45);
+  border-radius: 2px;
+}
+
+.elfinder-dialog.fma-editor-modal-dialog .fma-cm-search-match-current,
+.elfinder-dialog.elfinder-maximized .fma-cm-search-match-current {
+  background: rgba(245, 158, 11, 0.65);
+  outline: 1px solid rgba(217, 119, 6, 0.8);
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-buttonpane {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding: 7px 16px !important;
+  margin: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-buttonpane .ui-dialog-buttonset {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;
+  float: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto;
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-buttonpane .ui-dialog-buttonset.elfinder-edit-extras {
+  margin: 0 auto 0 0 !important;
+  display: inline-flex;
+  align-items: center;
+  order: -1;
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-buttonpane .ui-dialog-buttonset:not(.elfinder-edit-extras) {
+  margin-left: auto !important;
+}
+
+/* elFinder width-probe select (wfake) must stay hidden in fullscreen footer */
+.elfinder-dialog.elfinder-maximized .ui-dialog-buttonpane .elfinder-edit-extras>select:not(.ui-corner-all) {
+  display: none !important;
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-buttonpane .elfinder-edit-extras select.ui-corner-all {
+  margin: 0 !important;
+  margin-top: 0 !important;
+  padding: 6px 30px 6px 10px !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  min-width: 88px !important;
+  max-height: none !important;
+  border: 1px solid #c3c4c7 !important;
+  border-radius: 6px !important;
+  background-color: #fff !important;
+  color: #1e293b !important;
+  box-sizing: border-box !important;
+  vertical-align: middle;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  background-size: 12px 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-buttonpane .ui-button {
+  margin: 0 !important;
+  padding: 7px 16px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  min-height: 34px;
+  line-height: 1.35;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.elfinder-maximized .ui-dialog-buttonpane button span {
+  padding: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.35;
+}
+
+.elfinder-dialog.elfinder-maximized .ui-resizable-handle {
+  display: none !important;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-cm-editor-panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-cm-editor-panel .fma-cm-editor.CodeMirror {
+  height: 100% !important;
+}
+
+.elfinder-dialog.elfinder-maximized .fma-cm-editor .CodeMirror-scroll {
+  max-height: none !important;
+  height: 100% !important;
+}
+
+.elfinder-dialog .fma-cm-editor.CodeMirror {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 14px;
+  line-height: 1.55;
+  border: 1px solid #c3c4c7;
+  border-radius: 6px;
+}
+
+.elfinder-dialog .fma-cm-editor .CodeMirror-gutters {
+  background: #f8fafc;
+  border-right: 1px solid #e2e8f0;
+}
+
+.elfinder-dialog .fma-cm-editor .CodeMirror-linenumber {
+  color: #94a3b8;
+  padding: 0 8px 0 4px;
+  min-width: 2.5em;
+}
+
+.elfinder-dialog .fma-cm-editor .CodeMirror-cursor {
+  border-left-width: 2px;
+}
+
+.elfinder-dialog .fma-cm-editor .CodeMirror-selected {
+  background: rgba(63, 105, 114, 0.22) !important;
+}
+
+.elfinder-dialog .fma-cm-editor .fma-cm-active-line {
+  background: rgba(63, 105, 114, 0.07) !important;
+}
+
+.elfinder-dialog .fma-cm-editor .fma-error-line {
+  background-color: #fee2e2 !important;
+  border-left: 3px solid #dc2626 !important;
+}
+
+.elfinder-dialog .fma-cm-editor .CodeMirror-gutter.fma-error-gutter {
+  width: 18px !important;
+  min-width: 18px !important;
+  background: #f8fafc !important;
+  border-right: 1px solid #e2e8f0;
+}
+
+.elfinder-dialog .fma-cm-editor .fma-error-marker {
+  color: #dc2626;
+  font-size: 12px;
+  line-height: 1;
+  text-align: center;
+}
+
+.elfinder-dialog .fma-cm-editor .CodeMirror-scroll {
+  overflow: auto !important;
+}
+
+/* PHP Error Dialog Styles */
+.fma-php-errors {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.fma-php-errors h3 {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.fma-error-list {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #f9f9f9;
+  padding: 10px;
+}
+
+.fma-error-item {
+  border-radius: 4px;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.fma-error-item strong {
+  color: #d63638;
+}
+
+.fma-btn:focus {
+  box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, 0.8);
+  outline: none;
+}
+
+/* Success dialog styles */
+.fma-success-icon {
+  font-size: 24px;
+  color: #46b450;
+  margin-bottom: 10px;
+}
+
+/* Editor Toolbar Styles */
+.fma-editor-toolbar {
+  background: #f1f1f1;
+  border: 1px solid #ddd;
+  border-bottom: none;
+  padding: 8px 12px;
+  border-radius: 4px 4px 0 0;
+}
+
+.fma-validate-btn {
+  background: #0073aa;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background-color 0.2s;
+}
+
+.fma-validate-btn:hover {
+  background: #005a87;
+}
+
+.fma-validate-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.fma-validate-btn:focus {
+  box-shadow: 0 0 0 1px #5b9dd9;
+  outline: none;
+}
+
+/* AFM modern elFinder polish */
+.elfinder {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.elfinder-cwd-file .elfinder-cwd-filename {
+  font-size: 13px;
+}
+
+/* List view — AFM content area */
+.elfinder-cwd table thead td {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+  font-weight: 600;
+  border: none !important;
+  filter: none !important;
+}
+
+.elfinder-cwd table tr:nth-child(odd),
+.elfinder-cwd table tr.elfinder-odd-row {
+  background-color: #f8fafc !important;
+}
+
+.elfinder-cwd table tr.elfinder-cwd-file.ui-selected td,
+.elfinder-cwd table td.ui-state-hover {
+  background: #3f6972 !important;
+  color: #ffffff !important;
+}
+
+.elfinder-cwd table tr.elfinder-cwd-file.ui-selected td *,
+.elfinder-cwd table td.ui-state-hover * {
+	color: #ffffff !important;
+}
+
+/* AFM-1009: keep list-view rename field readable on selected/hover rows */
+.elfinder-cwd table tr.elfinder-cwd-file.ui-selected td .elfinder-cwd-filename input,
+.elfinder-cwd table tr.elfinder-cwd-file.ui-selected td .elfinder-cwd-filename textarea,
+.elfinder-cwd table td.ui-state-hover .elfinder-cwd-filename input,
+.elfinder-cwd table td.ui-state-hover .elfinder-cwd-filename textarea {
+	color: #1e293b !important;
+	background-color: #ffffff !important;
+	caret-color: #1e293b;
+}
+
+.elfinder-cwd-view-icons .elfinder-cwd-file.ui-selected,
+.elfinder-cwd-view-icons .elfinder-cwd-file .elfinder-cwd-filename.ui-state-hover {
+  background: #3f6972 !important;
+  color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.elfinder .ui-widget-content {
+  border-color: #e2e8f0;
+}
+
+.elfinder-navbar .elfinder-navbar-dir {
+  border-radius: 6px;
+  margin: 1px 4px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.elfinder-navbar .elfinder-navbar-dir.ui-state-active,
+.elfinder-navbar .ui-state-active.elfinder-navbar-dir {
+  background: #3f6972 !important;
+  border-color: #3f6972 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.elfinder-navbar .elfinder-navbar-dir.ui-state-active *,
+.elfinder-navbar .ui-state-active.elfinder-navbar-dir * {
+  color: #ffffff !important;
+}
+
+.elfinder-navbar .elfinder-navbar-dir.ui-state-hover:not(.ui-state-active) {
+  background: rgba(63, 105, 114, 0.14) !important;
+  color: #1e293b !important;
+}
+
+/* Statusbar / footer — compact but readable */
+.elfinder .elfinder-statusbar {
+  font-size: 12px;
+  line-height: 1.3;
+  min-height: 26px;
+  padding: 3px 10px !important;
+}
+
+.elfinder .elfinder-statusbar span,
+.elfinder .elfinder-statusbar .elfinder-path,
+.elfinder .elfinder-statusbar .elfinder-stat-size,
+.elfinder .elfinder-statusbar .elfinder-stat-selected {
+  font-size: 12px !important;
+  line-height: 1.3 !important;
+}
+
+.elfinder-contextmenu {
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  border: 1px solid #e2e8f0;
+  overflow: visible;
+}
+
+/* Submenus (e.g. Create archive) render outside the parent menu — must not clip */
+.elfinder .elfinder-contextmenu-sub {
+  overflow: auto;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.14);
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  z-index: 100050;
+}
+
+.elfinder .elfinder-contextmenu-item {
+  overflow: visible;
+}
+
+.elfinder-dialog {
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.16);
+}
+
+.elfinder-notify {
+  border-radius: 8px;
+}
+
+/* Notify popup (e.g. "Searching files") */
+.elfinder-dialog.elfinder-dialog-notify {
+  width: 260px !important;
+  max-width: 260px !important;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .ui-dialog-titlebar {
+  display: none !important;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .ui-dialog-content {
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  background: #ffffff;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) 22px;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "icon title close"
+    "icon progress progress";
+  gap: 6px 8px;
+  align-items: center;
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 0;
+  overflow: hidden;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify:last-child {
+  border-bottom: 0;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-dialog-icon {
+  position: static;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  grid-area: icon;
+  align-self: center;
+  top: auto;
+  margin-top: 0;
+  transform: none;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-dialog-icon:not(.elfinder-dialog-icon-search) {
+  background-size: 32px auto;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-dialog-icon.elfinder-dialog-icon-search {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233f6972' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M16 16l4.5 4.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.elfinder-ltr .elfinder-dialog.elfinder-dialog-notify .elfinder-dialog-icon {
+  left: auto;
+}
+
+.elfinder-rtl .elfinder-dialog.elfinder-dialog-notify .elfinder-dialog-icon {
+  right: auto;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-msg {
+  grid-area: title;
+  display: block;
+  margin: 0;
+  padding: 1px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #0f172a;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cnt {
+  grid-area: title;
+  justify-self: end;
+  align-self: center;
+  margin: 0;
+  padding-right: 28px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cnt:empty {
+  display: none;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-progressbar {
+  grid-area: progress;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  height: 6px;
+  border: 0;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-progress {
+  height: 6px;
+  border-radius: 999px;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cancel {
+  position: static;
+  top: auto;
+  right: auto;
+  margin: 0;
+  grid-area: close;
+  align-self: start;
+  justify-self: end;
+  width: 22px;
+  height: 22px;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cancel .elfinder-notify-button {
+  position: static;
+  top: auto;
+  right: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cancel .ui-icon-close {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border-radius: 6px;
+  background: transparent !important;
+  background-image: none !important;
+  text-indent: 0;
+  overflow: visible;
+  opacity: 1;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cancel .ui-icon-close::before {
+  content: "\00d7";
+  display: block;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cancel .elfinder-notify-button:hover,
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cancel .elfinder-notify-button.ui-state-hover {
+  background: #f1f5f9 !important;
+}
+
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cancel .elfinder-notify-button:hover .ui-icon-close::before,
+.elfinder-dialog.elfinder-dialog-notify .elfinder-notify-cancel .elfinder-notify-button.ui-state-hover .ui-icon-close::before {
+  color: #475569;
+}
+
+/* elFinder confirm / error message dialogs */
+.elfinder-dialog.elfinder-dialog-confirm,
+.elfinder-dialog.elfinder-dialog-error,
+.elfinder-dialog.fma-elfinder-message-dialog,
+.elfinder-dialog.fma-elfinder-info-dialog {
+  overflow: hidden !important;
+  min-height: 0 !important;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.elfinder-dialog-confirm .ui-dialog-content,
+.elfinder-dialog.elfinder-dialog-error .ui-dialog-content,
+.elfinder-ltr .elfinder-dialog.elfinder-dialog-confirm .ui-dialog-content,
+.elfinder-ltr .elfinder-dialog.elfinder-dialog-error .ui-dialog-content {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px !important;
+  min-height: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  white-space: normal;
+  line-height: 1.55;
+  font-size: 14px;
+  color: #334155;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.fma-elfinder-message-dialog .fma-elfinder-dialog-message {
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.elfinder-dialog.fma-elfinder-message-dialog .elfinder-err-var {
+  word-break: break-all;
+}
+
+/* Get Info / Selection Info dialog (AFM-897) */
+.elfinder-dialog.fma-elfinder-info-dialog {
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+.elfinder-dialog.fma-elfinder-info-dialog .ui-dialog-content {
+  min-height: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  box-sizing: border-box;
+}
+
+.elfinder-dialog.fma-elfinder-info-dialog .elfinder-info-title {
+  width: auto;
+}
+
+.elfinder-dialog.fma-elfinder-info-dialog .elfinder-info-tb {
+  width: auto;
+  table-layout: auto;
+}
+
+.elfinder-dialog.fma-elfinder-info-dialog .elfinder-info-label {
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.elfinder-dialog.fma-elfinder-info-dialog .elfinder-info-tb td:not(.elfinder-info-label) {
+  word-break: break-word;
+}
+
+.elfinder-dialog.elfinder-dialog-confirm .elfinder-dialog-icon,
+.elfinder-dialog.elfinder-dialog-error .elfinder-dialog-icon {
+  position: static !important;
+  flex: 0 0 32px;
+  width: 32px !important;
+  height: 32px !important;
+  margin: 2px 0 0 !important;
+  float: none !important;
+  left: auto !important;
+  top: auto !important;
+}
+
+.elfinder-dialog.elfinder-dialog-confirm .ui-dialog-titlebar,
+.elfinder-dialog.elfinder-dialog-error .ui-dialog-titlebar {
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.elfinder-dialog.elfinder-dialog-confirm .ui-dialog-buttonpane,
+.elfinder-dialog.elfinder-dialog-error .ui-dialog-buttonpane {
+  padding: 10px 12px !important;
+  margin: 0 !important;
+  background: #f8fafc !important;
+  border-top: 1px solid #e2e8f0 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+.elfinder-dialog.elfinder-dialog-confirm .ui-dialog-buttonset,
+.elfinder-dialog.elfinder-dialog-error .ui-dialog-buttonset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  float: none !important;
+  margin: 0 !important;
+  width: 100%;
+}
+
+.elfinder-dialog.elfinder-dialog-confirm .ui-dialog-buttonset .ui-button,
+.elfinder-dialog.elfinder-dialog-error .ui-dialog-buttonset .ui-button {
+  margin: 0 !important;
+  padding: 8px 14px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+}
+
+.elfinder-dialog.elfinder-dialog-confirm .elfinder-confirm-accept .ui-button,
+.elfinder-dialog.elfinder-dialog-confirm .ui-button.elfinder-confirm-accept {
+  background: #3f6972 !important;
+  color: #fff !important;
+  border-color: #3f6972 !important;
+}
+
+.elfinder-dialog.elfinder-dialog-confirm .elfinder-dialog-confirm-applyall,
+.elfinder-dialog.elfinder-dialog-confirm .elfinder-dialog-confirm-encoding {
+  float: none;
+  margin: 0 0 8px;
+  width: 100%;
+}

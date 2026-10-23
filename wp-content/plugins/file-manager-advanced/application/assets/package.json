@@ -1,0 +1,33 @@
+{
+  "name": "afm-react-admin",
+  "version": "1.0.0",
+  "description": "React Admin UI for Advanced File Manager",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "start": "webpack --mode development --watch"
+  },
+  "keywords": [
+    "wordpress",
+    "react",
+    "file-manager"
+  ],
+  "author": "",
+  "license": "GPL-2.0+",
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "@babel/preset-react": "^7.23.0",
+    "babel-loader": "^9.1.3",
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-quill": "^2.0.0"
+  }
+}
