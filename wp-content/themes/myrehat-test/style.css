@@ -9,6 +9,12 @@ Text Domain: myrehat-test
 */
 
 /* Trails test page styles */
+.trails-contact-bar { position: sticky; top: 0; z-index: 100; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 8px 16px; background: #fff; border-bottom: 1px solid #ddd; }
+.admin-bar .trails-contact-bar { top: var(--wp-admin--admin-bar--height, 0px); }
+.trails-contact-btn { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 20px; border-radius: 999px; color: #fff; font-weight: 700; text-decoration: none; }
+.trails-contact-btn:hover, .trails-contact-btn:focus { color: #fff; }
+.trails-contact-whatsapp { background: #075e54; }
+.trails-contact-line { background: #00873c; }
 .site-header-trails { background: #0c6b4f; color: #fff; padding: 32px 20px; text-align: center; }
 .site-header-trails h1 { font-size: 32px; color: #fff; }
 .site-header-trails #main-search { margin-top: 14px; padding: 10px; font-size: 15px; width: min(420px, 90%); }
@@ -16,21 +22,32 @@ Text Domain: myrehat-test
 .trails-main { max-width: 1000px; margin: 0 auto; padding: 20px; }
 .trails-search-row { display: flex; gap: 10px; margin-bottom: 16px; }
 .trails-search-row input, .trails-search-row select { padding: 10px; font-size: 15px; flex: 1; }
-.trails-cards { display: flex; gap: 14px; }
-.trail-card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; min-width: 320px; background: #fff; }
+.trails-cards { display: flex; flex-wrap: wrap; gap: 14px; }
+.trail-card { border: 1px solid #ddd; border-radius: 8px; padding: 14px; flex: 1 1 260px; min-width: 0; background: #fff; }
 .trail-card h3 { font-size: 17px; margin-bottom: 6px; }
 .trail-card .price { font-weight: bold; color: #0c6b4f; }
 #trails-no-results { color: #a00; margin: 12px 0; }
 .trails-booking { margin-top: 28px; border-top: 2px solid #eee; padding-top: 18px; }
 .trails-booking form { display: flex; flex-direction: column; gap: 10px; max-width: 420px; }
 .trails-booking input { padding: 9px; font-size: 15px; }
+.trails-choice { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; }
+.trails-choice legend { padding: 0 4px; font-weight: bold; }
+.trails-choice label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.trails-consent { display: flex; align-items: center; gap: 8px; cursor: pointer; }
 .trails-booking button { padding: 11px; background: #0c6b4f; color: #fff; border: 0; cursor: pointer; }
 #trails-total { font-weight: bold; }
 #trails-confirmation { margin-top: 12px; border: 1px solid #0c6b4f; border-radius: 8px; padding: 12px; background: #eef7f2; }
+#trails-confirmation.is-error { border-color: #a00; background: #fdeeee; color: #700; }
+#trails-confirmation p, #trails-confirmation ul { margin: 0; }
+#trails-confirmation ul { margin-top: 6px; padding-left: 20px; }
+.trails-booking button:disabled { opacity: 0.6; cursor: wait; }
 .trails-footer { background: #222; color: #ccc; padding: 22px 20px; margin-top: 30px; text-align: center; }
 .trails-footer nav { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-bottom: 10px; }
 .trails-footer a { color: #ccc; }
+.trails-social { display: flex; flex-wrap: wrap; gap: 8px 10px; justify-content: center; margin-bottom: 12px; }
+.trails-social-link { padding: 4px 12px; border: 1px solid #555; border-radius: 999px; font-size: 14px; color: #ccc; }
+.trails-social-link:hover, .trails-social-link:focus { color: #fff; border-color: #ccc; }
 @media (max-width: 600px) {
-  .trails-promo { display: none; }
+  .admin-bar .trails-contact-bar { top: 0; } /* admin bar is not fixed at this width */
   .trails-search-row { flex-direction: column; }
 }
