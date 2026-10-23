@@ -25,6 +25,8 @@ const OUT_DIR = __dirname;
 const SHOT_DIR = path.join(OUT_DIR, 'screenshots');
 const DESKTOP = { width: 1280, height: 800 };
 const MOBILE = { width: 390, height: 844, isMobile: true, hasTouch: true };
+// Hero: the theme's default <header> or, when the page is built with Elementor, the container with class trails-hero.
+const HERO_SEL = '.trails-hero, .site-header-trails';
 
 const results = [];
 let browser;
@@ -177,7 +179,7 @@ async function run() {
   await uat('A10', 'A10-01', 'Header search memfilter listing yang sama', ['Ketik "kinabalu" di kotak search header ("Search homepage...")'], 'Listing terfilter; kotak search listing ikut berisi "kinabalu"', async () => {
     await typeSearch(p, '#main-search', 'kinabalu'); const v = await visibleCards(p); const synced = await p.inputValue('#search-box');
     await mark(p, ['#main-search', '#search-box', '.trail-card:not([style*="none"])']);
-    const s1 = await shot(p, 'A10-01-header-search', { selector: '.site-header-trails' });
+    const s1 = await shot(p, 'A10-01-header-search', { selector: HERO_SEL });
     const s2 = await shot(p, 'A10-01-header-search-listing', { selector: '.trails-main' }); await unmark(p);
     return { pass: v.length === 1 && synced === 'kinabalu', actual: `${v.length} tampil (${v.join(', ')}); kotak listing = "${synced}"`, shots: [s1, s2] };
   });
@@ -204,7 +206,7 @@ async function run() {
   // ---------- A5 Heading
   await uat('A5', 'A5-01', 'Judul halaman tepat', ['Lihat heading utama halaman'], 'Teks persis "Tropic Hiking Trails"', async () => {
     const h1 = await p.$$eval('h1', hs => hs.map(h => h.innerText));
-    await mark(p, ['.site-header-trails h1']); const s = await shot(p, 'A5-01-heading', { selector: '.site-header-trails' }); await unmark(p);
+    await mark(p, [HERO_SEL.split(', ').map(h => h + ' h1').join(', ')]); const s = await shot(p, 'A5-01-heading', { selector: HERO_SEL }); await unmark(p);
     return { pass: h1.length === 1 && h1[0] === 'Tropic Hiking Trails', actual: `h1 = ${JSON.stringify(h1)}`, shots: [s] };
   });
 
@@ -404,13 +406,13 @@ async function run() {
   p = await newPage(MOBILE);
   await uat('A7', 'A7-01', 'Mobile 390px: tidak ada scroll horizontal', ['Buka halaman di viewport 390px', 'Coba geser halaman ke kanan'], 'Lebar halaman = 390px; halaman tidak bisa digeser horizontal; tidak ada elemen keluar viewport', async () => {
     const r = await p.evaluate(() => { const vw = document.documentElement.clientWidth; window.scrollTo(300, 0); const sx = window.scrollX; window.scrollTo(0, 0);
-      const out = [...document.querySelectorAll('body *')].filter(e => { if (e.closest('#wpadminbar, .screen-reader-text')) return false; const b = e.getBoundingClientRect(); return b.width && (b.right > vw + 0.5 || b.left < -0.5); }).length;
+      const out = [...document.querySelectorAll('body *')].filter(e => { if (e.closest('#wpadminbar, .screen-reader-text, .elementor-screen-only')) return false; /* visually-hidden a11y text, off-screen by design */ const b = e.getBoundingClientRect(); return b.width && (b.right > vw + 0.5 || b.left < -0.5); }).length;
       return { vw, sw: document.documentElement.scrollWidth, sx, out }; });
     const s = await shot(p, 'A7-01-mobile-390-fullpage', { fullPage: true });
     return { pass: r.sw === r.vw && r.sx === 0 && r.out === 0, actual: `scrollWidth ${r.sw}px / viewport ${r.vw}px; scrollX setelah digeser: ${r.sx}; elemen keluar viewport: ${r.out}`, shots: [s] };
   });
   await uat('A7', 'A7-02', 'Mobile 390px: semua section tampil', ['Periksa section utama satu per satu'], 'Contact bar, header, promo, search, listing, form booking, footer semuanya tampil', async () => {
-    const secs = { 'Contact bar': '.trails-contact-bar', 'Header': '.site-header-trails', 'Promo': '.trails-promo', 'Search & kategori': '.trails-search-row', 'Listing': '.trails-cards', 'Form booking': '#booking-form', 'Footer': '.trails-footer' };
+    const secs = { 'Contact bar': '.trails-contact-bar', 'Header': HERO_SEL, 'Promo': '.trails-promo', 'Search & kategori': '.trails-search-row', 'Listing': '.trails-cards', 'Form booking': '#booking-form', 'Footer': '.trails-footer' };
     const shown = await p.evaluate(s => Object.entries(s).map(([n, sel]) => { const e = document.querySelector(sel); return [n, !!e && getComputedStyle(e).display !== 'none' && e.getBoundingClientRect().height > 0]; }), secs);
     await mark(p, ['.trails-promo']); const s = await shot(p, 'A7-02-mobile-promo-visible'); await unmark(p);
     return { pass: shown.every(([, v]) => v), actual: shown.map(([n, v]) => `${n}: ${v ? 'tampil' : 'HILANG'}`).join('; '), shots: [s] };

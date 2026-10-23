@@ -13,6 +13,24 @@ function myrehat_test_assets() {
     );
 }
 
+/**
+ * Whether the trails page hero comes from Elementor: the page is open in the Elementor editor,
+ * or it is built with Elementor and has content. Otherwise page-trails.php shows its default hero.
+ * (Opening the editor alone marks a page as built with Elementor, so an empty document is ignored.)
+ */
+function myrehat_test_hero_from_elementor() {
+    if ( ! did_action( 'elementor/loaded' ) ) {
+        return false;
+    }
+    $page_id   = get_queried_object_id();
+    $elementor = \Elementor\Plugin::$instance;
+    if ( $elementor->preview->is_preview_mode( $page_id ) ) {
+        return true;
+    }
+    $document = $elementor->documents->get( $page_id );
+    return $document && $document->is_built_with_elementor() && ! empty( $document->get_elements_data() );
+}
+
 // Heading of the booking section, translatable in the theme's text domain.
 function myrehat_test_booking_title() {
     return __( 'Book a guided hike', 'myrehat-test' );

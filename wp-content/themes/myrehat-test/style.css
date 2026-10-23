@@ -17,7 +17,7 @@ Text Domain: myrehat-test
 .trails-contact-line { background: #00873c; }
 .site-header-trails { background: #0c6b4f; color: #fff; padding: 32px 20px; text-align: center; }
 .site-header-trails h1 { font-size: 32px; color: #fff; }
-.site-header-trails #main-search { margin-top: 14px; padding: 10px; font-size: 15px; width: min(420px, 90%); }
+#main-search { display: block; margin: 14px auto 0; padding: 10px; font-size: 15px; width: min(420px, 90%); }
 .trails-promo { background: #fff3cd; padding: 12px 20px; text-align: center; }
 .trails-main { max-width: 1000px; margin: 0 auto; padding: 20px; }
 .trails-search-row { display: flex; gap: 10px; margin-bottom: 16px; }

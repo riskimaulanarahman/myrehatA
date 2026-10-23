@@ -15,11 +15,21 @@ $contact_links = array(
   <?php endforeach; ?>
 </nav>
 
+<?php if ( myrehat_test_hero_from_elementor() ) : ?>
+  <?php
+  // The hero is the page content built with Elementor.
+  while ( have_posts() ) :
+    the_post();
+    the_content();
+  endwhile;
+  ?>
+<?php else : ?>
 <header class="site-header-trails">
   <h1>Tropic Hiking Trails</h1>
   <p>Find your next trail with MyRehat</p>
   <input id="main-search" type="text" placeholder="Search homepage...">
 </header>
+<?php endif; ?>
 
 <div class="trails-promo">
   <strong>Limited offer:</strong> 20% off all guided hikes this month.
